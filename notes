@@ -1,0 +1,78 @@
+Creat tutoral before start game where you teach player how to play
+
+game class:
+controler for entire game
+handle scenes and gameplay
+
+tutorial class:
+handle everthing related to playing the tutorial
+
+level class:
+create and draw levels.
+
+animation run at 8 frames per second
+
+
+a little bit of an offset between the background
+
+
+run: play when pressed (hold)
+idle robot: plays when player does nothing and is in robot mode
+shoot: key press. can shoot when run
+jump: key press. can shoot when jump and can jump when running
+transform: key press. cannot shoot or do anything else when animation plays.
+driving: can shoot maybe secondary weapon. can't shoot blaster? cannot jump
+idle car: plays when player does nothing and is in car modes
+blasterGet: plays on key press when first press shoot?
+useItem: key press (like shooting but different button)
+
+hold down z to grab blaster and have to hold z to keep blaster out. When z is let go, put away blaster.
+
+
+set up modes in next class!!!!
+
+
+
+when hold Z keeps repeating animtions
+
+
+when player face direction have two blasters one face right other face left......
+
+use mask for platforms. player can only jump on mask.
+mask means to select only the pixels that we can see.
+
+FIX GUN ROTATION!!!!!!! :)
+
+FIX jumping!!!!!!!
+set up collision detection so that player can stay on ground. Ground be platform. Can jump on platforms and stay there. Figure out collision with sides. Stop player when collding with wall? have cyotye jumping?
+add collion for objects/ platforms
+
+
+STOOOOP THE INNFINNNNNITE WHHHHIIIILLLLLEEEEEE LLLLLOOOOOOOOOOPPPP!!!!!!!!
+
+1: try an animation image besides the drive animation see if it is the mask or the speed aniamtion wrong or timing?
+2: get creative and see if it is timing or spacing problem.
+HHHHHHEHHEHEHEEEEEELLLLLLLLPPPPP :(
+
+
+
+
+
+make class var to keep track of center pos of player.
+
+player center pos might be center of sprite sheet
+
+
+
+
+finish jump for loop code
+
+
+
+make rect_boundary_points calculate rectanlge points thingy.
+
+
+SET UP GIT HUBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB :0
+
+
+
