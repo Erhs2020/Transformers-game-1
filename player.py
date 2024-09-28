@@ -10,7 +10,7 @@ class Player(Sprite):
         self.animationChange("OP IDLE")
         self.mode = "robot"
         self.blaster_visable = False
-        
+        self.size = (600,600)
 
         #jumping variables
         self.velocity_y = 0
@@ -58,13 +58,14 @@ class Player(Sprite):
             collision_offset = pygame.sprite.collide_mask(self, platform)
             if collision_offset:
                 collision_point = self.mask.overlap(platform.mask, collision_offset)
-             
+                boundary_rect = self.get_mask_rect(self.mask,self.rect.topleft)
+
                 if collision_point:
                     #collided on left side of the platform.
-                    if self.rect.right >= platform.rect.left:
+                    if boundary_rect.bottom < platform.rect.top and self.rect.right >= platform.rect.left:
                         return "left"
                     #collided on right side of the plaform.
-                    if self.rect.left < platform.rect.right:
+                    if boundary_rect.bottom < platform.rect.top and self.rect.left < platform.rect.right:
                         return "right"
                     return True
         return False
@@ -94,6 +95,10 @@ class Player(Sprite):
                 if self.velocity_y < 0:
                     if boundary_rect.bottom > platform.rect.top:
                         boundary_rect.bottom = platform.rect.top
+                        newY = boundary_rect.top - 82
+                        self.rect.top = newY
+                        print(self.rect.top- boundary_rect.top)
+                        print(self.rect.left- boundary_rect.left)
                         self.on_ground = True
                         self.velocity_y = 0
 
@@ -147,7 +152,7 @@ class Player(Sprite):
             
             
 
-        # pygame.draw.rect(screen, (255, 0, 0), self.rect,2)
+        pygame.draw.rect(screen, (255, 0, 0), self.rect,2)
         
         mask_rect = self.get_mask_rect(self.mask, self.rect.topleft)
         pygame.draw.rect(screen,(0,255,0), mask_rect, 2)
