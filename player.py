@@ -62,12 +62,13 @@ class Player(Sprite):
 
                 if collision_point:
                     #collided on left side of the platform.
-                    if boundary_rect.bottom < platform.rect.top and self.rect.right >= platform.rect.left:
-                        return "left"
+                    if boundary_rect.right >= platform.rect.left:
+                        print("left",platform.rect.center)
+                        # return "left"
                     #collided on right side of the plaform.
-                    if boundary_rect.bottom < platform.rect.top and self.rect.left < platform.rect.right:
+                    if boundary_rect.left < platform.rect.right:
+                        print("right",platform.rect.center)
                         return "right"
-                    return True
         return False
     
 
