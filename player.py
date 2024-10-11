@@ -60,13 +60,13 @@ class Player(Sprite):
                 collision_point = self.mask.overlap(platform.mask, collision_offset)
                 boundary_rect = self.get_mask_rect(self.mask,self.rect.topleft)
 
-                if collision_point:
+                if collision_point and boundary_rect.top >= platform.rect.top:
                     #collided on left side of the platform.
-                    if boundary_rect.right >= platform.rect.left:
+                    if boundary_rect.left <= platform.rect.left + 10:
                         print("left",platform.rect.center)
-                        # return "left"
+                        return "left"
                     #collided on right side of the plaform.
-                    if boundary_rect.left < platform.rect.right:
+                    if boundary_rect.right >= platform.rect.right - 10:
                         print("right",platform.rect.center)
                         return "right"
         return False
@@ -94,7 +94,7 @@ class Player(Sprite):
             if collision_point:
                 #player falling
                 if self.velocity_y < 0:
-                    if boundary_rect.bottom > platform.rect.top:
+                    if boundary_rect.bottom > platform.rect.top and (boundary_rect.right >= platform.rect.left + 10 and boundary_rect.left <= platform.rect.right - 10):
                         boundary_rect.bottom = platform.rect.top
                         newY = boundary_rect.top - 82
                         self.rect.top = newY
