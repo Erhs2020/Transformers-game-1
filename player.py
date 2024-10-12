@@ -102,6 +102,14 @@ class Player(Sprite):
                         print(self.rect.left- boundary_rect.left)
                         self.on_ground = True
                         self.velocity_y = 0
+                
+                if self.velocity_y > 0:
+                    if boundary_rect.top < platform.rect.bottom:
+                        boundary_rect.top = platform.rect.bottom
+                        self.velocity_y = -1
+                        newY = boundary_rect.top - 82
+                        self.rect.top = newY
+
 
         #Ensure the player doesn't fall through the ground
         if self.rect.centery >= 519:
