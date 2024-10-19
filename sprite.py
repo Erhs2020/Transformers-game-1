@@ -144,6 +144,10 @@ class Sprite(pygame.sprite.Sprite):
         mask_rect = pygame.Rect(min_x,min_y, max_x - min_x, max_y-min_y)
 
         return mask_rect
+    
+    def get_universal_hitbox(self, x, y):
+        universal_rect = pygame.Rect(x,y,70,70)
+        return universal_rect
         
         
     

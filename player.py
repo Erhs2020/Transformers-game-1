@@ -89,11 +89,20 @@ class Player(Sprite):
             offset = (platform.rect.x - self.rect.x, platform.rect.y - self.rect.y)
             collision_point = self.mask.overlap(platform.mask, offset)
             boundary_rect = self.get_mask_rect(self.mask,self.rect.topleft)
+            self.universeal_rect = self.get_universal_hitbox(self.rect.left + 50, self.rect.top + 50)
 
             #check if there is a collision point
             if collision_point:
+                #player hit roof of platform
+                if self.velocity_y > 0:
+                    if self.universeal_rect.top < platform.rect.bottom:
+                        self.universeal_rect.top = platform.rect.bottom
+                        self.velocity_y = 0
+                        newY = self.universeal_rect.top - 82
+                        self.rect.top = newY
                 #player falling
-                if self.velocity_y < 0:
+                
+                elif self.velocity_y < 0:
                     if boundary_rect.bottom > platform.rect.top and (boundary_rect.right >= platform.rect.left + 10 and boundary_rect.left <= platform.rect.right - 10):
                         boundary_rect.bottom = platform.rect.top
                         newY = boundary_rect.top - 82
@@ -103,12 +112,6 @@ class Player(Sprite):
                         self.on_ground = True
                         self.velocity_y = 0
                 
-                if self.velocity_y > 0:
-                    if boundary_rect.top < platform.rect.bottom:
-                        boundary_rect.top = platform.rect.bottom
-                        self.velocity_y = -1
-                        newY = boundary_rect.top - 82
-                        self.rect.top = newY
 
 
         #Ensure the player doesn't fall through the ground
@@ -163,6 +166,8 @@ class Player(Sprite):
 
         pygame.draw.rect(screen, (255, 0, 0), self.rect,2)
         
+        pygame.draw.rect(screen, (255, 0, 0), self.universeal_rect,2)
+
         mask_rect = self.get_mask_rect(self.mask, self.rect.topleft)
         pygame.draw.rect(screen,(0,255,0), mask_rect, 2)
 
