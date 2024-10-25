@@ -92,25 +92,27 @@ class Player(Sprite):
             self.universeal_rect = self.get_universal_hitbox(self.rect.left + 50, self.rect.top + 50)
 
             #check if there is a collision point
-            if collision_point:
+            # if platform.rect.collidepoint((self.rect.left + 82, self.rect.top + 70)):
+            
+            #player falling
+            if collision_point and self.velocity_y < 0:
+                if boundary_rect.bottom > platform.rect.top and (boundary_rect.right >= platform.rect.left + 10 and boundary_rect.left <= platform.rect.right - 10):
+                    boundary_rect.bottom = platform.rect.top
+                    newY = boundary_rect.top - 82
+                    self.rect.top = newY
+                    print(self.rect.top- boundary_rect.top)
+                    print(self.rect.left- boundary_rect.left)
+                    self.on_ground = True
+                    self.velocity_y = 0
+
+            elif collision_point:
                 #player hit roof of platform
                 if self.velocity_y > 0:
-                    if self.universeal_rect.top < platform.rect.bottom:
-                        self.universeal_rect.top = platform.rect.bottom
+                    if boundary_rect.top < platform.rect.bottom and (boundary_rect.right >= platform.rect.left + 10 and boundary_rect.left <= platform.rect.right - 10):
                         self.velocity_y = 0
-                        newY = self.universeal_rect.top - 82
+                        newY = platform.rect.bottom - 75
                         self.rect.top = newY
-                #player falling
-                
-                elif self.velocity_y < 0:
-                    if boundary_rect.bottom > platform.rect.top and (boundary_rect.right >= platform.rect.left + 10 and boundary_rect.left <= platform.rect.right - 10):
-                        boundary_rect.bottom = platform.rect.top
-                        newY = boundary_rect.top - 82
-                        self.rect.top = newY
-                        print(self.rect.top- boundary_rect.top)
-                        print(self.rect.left- boundary_rect.left)
-                        self.on_ground = True
-                        self.velocity_y = 0
+                        print("collided with top")
                 
 
 
@@ -166,10 +168,14 @@ class Player(Sprite):
 
         pygame.draw.rect(screen, (255, 0, 0), self.rect,2)
         
-        pygame.draw.rect(screen, (255, 0, 0), self.universeal_rect,2)
+        # pygame.draw.rect(screen, (255, 0, 0), self.universeal_rect,2)
 
         mask_rect = self.get_mask_rect(self.mask, self.rect.topleft)
         pygame.draw.rect(screen,(0,255,0), mask_rect, 2)
+
+        # start_pos = (self.rect.left + 82, self.rect.top + 70)
+        # end_pos = (self.rect.left + 100, self.rect.top + 70)
+        # pygame.draw.line(screen, (0,255,0), start_pos,end_pos)
 
         
         #keep playing animation by indexing from animation list.
