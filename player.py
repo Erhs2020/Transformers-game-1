@@ -12,6 +12,8 @@ class Player(Sprite):
         self.blaster_visable = False
         self.size = (600,600)
 
+        self.boundary_rect = None
+
         #jumping variables
         self.velocity_y = 0
         self.gravity = 1
@@ -58,14 +60,14 @@ class Player(Sprite):
             collision_offset = pygame.sprite.collide_mask(self, platform)
             if collision_offset:
                 collision_point = self.mask.overlap(platform.mask, collision_offset)
-                boundary_rect = self.get_mask_rect(self.mask,self.rect.topleft)
+                self.boundary_rect = self.get_mask_rect(self.mask,self.rect.topleft)
 
-                if collision_point and boundary_rect.top >= platform.rect.top:
+                if collision_point and self.boundary_rect.top >= platform.rect.top:
                     #collided on left side of the platform.
-                    if boundary_rect.left <= platform.rect.left + 10:
+                    if self.boundary_rect.left <= platform.rect.left + 10:
                         return "left"
                     #collided on right side of the plaform.
-                    if boundary_rect.right >= platform.rect.right - 10:
+                    if self.boundary_rect.right >= platform.rect.right - 10:
                         return "right"
         return False
     
@@ -86,28 +88,24 @@ class Player(Sprite):
             #check for mask collision
             offset = (platform.rect.x - self.rect.x, platform.rect.y - self.rect.y)
             collision_point = self.mask.overlap(platform.mask, offset)
-            boundary_rect = self.get_mask_rect(self.mask,self.rect.topleft)
-            self.universeal_rect = self.get_universal_hitbox(self.rect.left + 50, self.rect.top + 50)
+            self.boundary_rect = self.get_mask_rect(self.mask,self.rect.topleft)
 
-            #check if there is a collision point
-            # if platform.rect.collidepoint((self.rect.left + 82, self.rect.top + 70)):
-            
             #player falling
             if collision_point and self.velocity_y < 0:
-                if boundary_rect.bottom > platform.rect.top and (boundary_rect.right >= platform.rect.left + 10 and boundary_rect.left <= platform.rect.right - 10):
-                    downoffset = boundary_rect.bottom - self.rect.top
-                    boundary_rect.bottom = platform.rect.top
-                    self.rect.top = boundary_rect.bottom - downoffset
+                if self.boundary_rect.bottom > platform.rect.top and (self.boundary_rect.right >= platform.rect.left + 10 and self.boundary_rect.left <= platform.rect.right - 10):
+                    downoffset = self.boundary_rect.bottom - self.rect.top
+                    self.boundary_rect.bottom = platform.rect.top
+                    self.rect.top = self.boundary_rect.bottom - downoffset
                     self.on_ground = True
                     self.velocity_y = 0
 
             elif collision_point:
                 #player hit roof of platform
                 if self.velocity_y > 0:
-                    if boundary_rect.top < platform.rect.bottom and (boundary_rect.right >= platform.rect.left + 10 and boundary_rect.left <= platform.rect.right - 10):
-                        upoffset = boundary_rect.top - self.rect.top
-                        boundary_rect.top = platform.rect.bottom
-                        self.rect.top = boundary_rect.top - upoffset
+                    if self.boundary_rect.top < platform.rect.bottom and (self.boundary_rect.right >= platform.rect.left + 10 and self.boundary_rect.left <= platform.rect.right - 10):
+                        upoffset = self.boundary_rect.top - self.rect.top
+                        self.boundary_rect.top = platform.rect.bottom + 10
+                        self.rect.top = self.boundary_rect.top - upoffset
                         self.velocity_y = 0
                 
 
@@ -179,7 +177,8 @@ class Player(Sprite):
         screen.blit(self.surf[self.frame_num], self.rect.topleft)
 
         if self.blaster_visable == True:
-            self.blaster.draw(screen, self, self.states, self.frame_num, self.facing)
+            
+            self.blaster.draw(screen, self)
 
         #get time since game started in ms
         # t = self.clock.get_time() 

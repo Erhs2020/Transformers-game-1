@@ -30,9 +30,6 @@ hold down z to grab blaster and have to hold z to keep blaster out. When z is le
 use cipher from coding challenges as writing on walls of game maybe hmmm
 
 
-NEED FIX BEFORE GIT COMMIT: fix boudary of left and right when collide with plat
-
-
 Fix blaster postisions and size
 
 
