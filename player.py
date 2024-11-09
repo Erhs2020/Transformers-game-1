@@ -63,11 +63,9 @@ class Player(Sprite):
                 if collision_point and boundary_rect.top >= platform.rect.top:
                     #collided on left side of the platform.
                     if boundary_rect.left <= platform.rect.left + 10:
-                        print("left",platform.rect.center)
                         return "left"
                     #collided on right side of the plaform.
                     if boundary_rect.right >= platform.rect.right - 10:
-                        print("right",platform.rect.center)
                         return "right"
         return False
     
@@ -97,11 +95,9 @@ class Player(Sprite):
             #player falling
             if collision_point and self.velocity_y < 0:
                 if boundary_rect.bottom > platform.rect.top and (boundary_rect.right >= platform.rect.left + 10 and boundary_rect.left <= platform.rect.right - 10):
+                    downoffset = boundary_rect.bottom - self.rect.top
                     boundary_rect.bottom = platform.rect.top
-                    newY = boundary_rect.top - 82
-                    self.rect.top = newY
-                    print(self.rect.top- boundary_rect.top)
-                    print(self.rect.left- boundary_rect.left)
+                    self.rect.top = boundary_rect.bottom - downoffset
                     self.on_ground = True
                     self.velocity_y = 0
 
@@ -109,10 +105,10 @@ class Player(Sprite):
                 #player hit roof of platform
                 if self.velocity_y > 0:
                     if boundary_rect.top < platform.rect.bottom and (boundary_rect.right >= platform.rect.left + 10 and boundary_rect.left <= platform.rect.right - 10):
+                        upoffset = boundary_rect.top - self.rect.top
+                        boundary_rect.top = platform.rect.bottom
+                        self.rect.top = boundary_rect.top - upoffset
                         self.velocity_y = 0
-                        newY = platform.rect.bottom - 75
-                        self.rect.top = newY
-                        print("collided with top")
                 
 
 
