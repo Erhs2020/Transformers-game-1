@@ -12,7 +12,6 @@ class Player(Sprite):
         self.blaster_visable = False
         self.size = (600,600)
 
-        self.boundary_rect = None
 
         #jumping variables
         self.velocity_y = 0
@@ -147,14 +146,14 @@ class Player(Sprite):
             elif self.mode == "robot" and self.frame_num == 0: self.states["transforming"] = False
 
         if self.states["gettingBlaster"] == True:
-            if self.frame_num > 5: 
+            if self.frame_num > 1: 
                 self.states["gettingBlaster"] = False
                 self.blaster_visable = True
                 self.resetStates()
                
 
         if self.states["blasterPutAway"] == True:
-            if self.frame_num < 1: 
+            if self.frame_num < 6: 
                 self.states["blasterPutAway"] = False
                
             

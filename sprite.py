@@ -71,6 +71,7 @@ class Sprite(pygame.sprite.Sprite):
         self.facing = "right"
         self.size = size
         self.mask = pygame.mask.from_surface(self.surf)
+        self.boundary_rect = None
         
         #AllFramesImageSize
         self.AFIS = (300,300)

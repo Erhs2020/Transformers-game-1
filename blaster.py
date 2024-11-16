@@ -4,7 +4,7 @@ from sprite import Sprite
 class Blaster(Sprite):
     
     def __init__(self):
-        Sprite.__init__(self,(125,305), (24,12), "OPBlaster.png")
+        Sprite.__init__(self,(125,305), (26,13), "OPBlaster.png")
         self.angle = 0
         self.facing = "right"
         self.starting_pos = self.rect.bottomleft
@@ -36,26 +36,16 @@ class Blaster(Sprite):
                 self.angle = -90
            
        
-
-        if player.states["running"] == False:
-            if self.facing == "right":
-                if self.angle < 25:
-                    self.rect.topleft = (self.rect.left,305)
-                else:
-                    self.rect.topleft = (self.rect.left,295)
-            else:
-                if 90 <= self.angle <= 155:
-                    self.rect.topleft = (self.rect.left,295)
-                else:
-                    self.rect.topleft = (self.rect.left,305)
-        
+        px, py = player.boundary_rect.center
+        if self.facing == "right":
+            self.rect.topleft = (px,py - 7)
+        else:
+            self.rect.topright = (px,py - 7)
         if player.states["running"]:
             if player.frame_num % 2 == 0:
-                self.rect.centery = player.rect.centery - 8
+                self.rect.centery += 1
             else:
-                self.rect.centery = player.rect.centery + 8
-            print(self.rect.centery)
-            
+                self.rect.centery -= 4
 
     def flipBlaster(self):
         self.surf = pygame.transform.flip(self.surf, False, True)
