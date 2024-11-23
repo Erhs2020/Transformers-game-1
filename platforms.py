@@ -1,5 +1,8 @@
 import pygame
 from sprite import Sprite
+from enemy import Enemy
+
+E = -1 #used to specify enemy in level
 
 class Platforms:
     def __init__(self, pos, structure, platforms_list):
@@ -18,15 +21,21 @@ class Platforms:
                 w = 60
                 h = 60
                 xOffset, yOffset = self.pos
+                x = xOffset + (col *  w)
+                y = yOffset + (row * h)
 
-                
+                if num == E:
+                    enemy = Enemy((x,y),(w,h),"Regular")
+                    boundary_rect = enemy.get_mask_rect(enemy.mask,(x,y))
+                    offset = boundary_rect.top - enemy.rect.top
+                    enemy.rect.top = y + offset
+                    self.tiles.append(enemy)
 
-                if num != 0:
-                    x = xOffset + (col *  w)
-                    y = yOffset + (row * h)
+                elif num != 0:
                     tile = Sprite((x,y), (w,h), "Platforms.png")
                     tile.change_surf_to(self.platforms_list[num - 1])
                     self.tiles.append(tile)
+
     def move_platforms(self, speed):
         for i in range(len(self.tiles)):
             self.tiles[i].rect.move_ip(speed,0)

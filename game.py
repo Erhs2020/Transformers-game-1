@@ -133,6 +133,7 @@ class Game:
 
         self.LEVELS[self.level].draw(self.SCREEN)
         
+        
         self.player.update(self.SCREEN, self.LEVELS[self.level])
 
 
