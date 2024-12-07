@@ -13,6 +13,8 @@ class Platforms:
         numCols = len(self.structure[0])
         self.tiles = []
         self.tile_masks = []
+        self.enemies = []
+
 
         #set up platforms according to structure
         for row in range(numRows):
@@ -25,11 +27,8 @@ class Platforms:
                 y = yOffset + (row * h)
 
                 if num == E:
-                    enemy = Enemy((x,y),(w,h),"Regular")
-                    boundary_rect = enemy.get_mask_rect(enemy.mask,(x,y))
-                    offset = boundary_rect.top - enemy.rect.top
-                    enemy.rect.top = y + offset
-                    self.tiles.append(enemy)
+                    enemy = Enemy((x,y + h),(w,h),"Regular",(w,h))
+                    self.enemies.append(enemy)
 
                 elif num != 0:
                     tile = Sprite((x,y), (w,h), "Platforms.png")
@@ -39,11 +38,17 @@ class Platforms:
     def move_platforms(self, speed):
         for i in range(len(self.tiles)):
             self.tiles[i].rect.move_ip(speed,0)
+    
+    def move_enemies(self, speed):
+        for i in range(len(self.enemies)):
+            self.enemies[i].move(speed,0)
 
     def draw(self, screen):
         
         for tile in self.tiles:
             tile.draw(screen)
+        for enemy in self.enemies:
+            enemy.draw(screen)
     
     #returns self.tiles
     def getTiles(self):
