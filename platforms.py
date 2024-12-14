@@ -41,7 +41,7 @@ class Platforms:
     
     def move_enemies(self, speed):
         for i in range(len(self.enemies)):
-            self.enemies[i].move(speed,0)
+            self.enemies[i].move(speed)
 
     def draw(self, screen):
         
