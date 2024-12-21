@@ -39,9 +39,9 @@ class Platforms:
         for i in range(len(self.tiles)):
             self.tiles[i].rect.move_ip(speed,0)
     
-    def move_enemies(self, speed):
+    def move_enemies(self, speed, player):
         for i in range(len(self.enemies)):
-            self.enemies[i].move(speed)
+            self.enemies[i].move(speed, player)
 
     def draw(self, screen):
         

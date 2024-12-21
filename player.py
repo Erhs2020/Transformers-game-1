@@ -12,7 +12,6 @@ class Player(Sprite):
         self.blaster_visable = False
         self.size = (600,600)
 
-
         #jumping variables
         self.velocity_y = 0
         self.gravity = 1

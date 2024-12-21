@@ -80,7 +80,7 @@ class Game:
             self.bg_rect2.move_ip((-speed),0)
             self.floor_rect2.move_ip((-speed)*floor_speed_mult,0)
             self.LEVELS[self.level].move_platforms((-speed)*floor_speed_mult)
-            self.LEVELS[self.level].move_enemies((-speed)*floor_speed_mult)
+            self.LEVELS[self.level].move_enemies((-speed)*floor_speed_mult, self.player)
 
                 
             
@@ -101,7 +101,7 @@ class Game:
             self.bg_rect2.move_ip((speed),0)
             self.floor_rect2.move_ip((speed)*floor_speed_mult,0)
             self.LEVELS[self.level].move_platforms((speed)*floor_speed_mult)
-            self.LEVELS[self.level].move_enemies((speed)*floor_speed_mult)
+            self.LEVELS[self.level].move_enemies((speed)*floor_speed_mult, self.player)
 
        
         
