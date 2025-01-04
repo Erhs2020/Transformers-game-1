@@ -46,7 +46,7 @@ class Enemy(Sprite):
         screen.blit(self.surf[self.frame_num], self.rect.topleft)
 
     def move(self, speed, player):
-      self.spotPlayer()
+      self.spotPlayer(player)
       self.farthest_left += speed
       self.farthest_right += speed
       self.speed = random.randint(1, 3)
@@ -57,10 +57,16 @@ class Enemy(Sprite):
       self.boundary_rect = self.get_mask_rect(self.mask, self.rect.topleft)
 
       if self.state == "spotplayer":
-        if self.boundary_rect.left > self.farthest_left:
-          self.rect.move_ip(self.speed, 0)
-        if self.boundary_rect.right < self.farthest_right:
+        """
+        todo:
+        make sure to account for facing.
+        keep moving in direction of facing until hit edge.
+        """
+
+        if self.facing == "left" and self.boundary_rect.left > self.farthest_left:
           self.rect.move_ip(-self.speed, 0)
+        if self.facing == "right" and self.boundary_rect.right < self.farthest_right:
+          self.rect.move_ip(self.speed, 0)
 
       if self.state == "patrol":
         if self.boundary_rect.left <= self.farthest_left:
@@ -84,10 +90,17 @@ class Enemy(Sprite):
         self.stoptime = self.start_time + random.uniform(self.min_wait,self.max_wait)
 
     def spotPlayer(self, player):
-      if player.boundary_rect.center - self.rect.center < self.enemyrange:
-        self.state == "spotplayer"
-        if player.boundary_rect.center - self.farthest_left > player.bound_rect.center - self.farthest_right:
+      if abs(player.boundary_rect.centerx - self.boundary_rect.centerx) < self.enemyrange:
+        self.state = "spotplayer"
+        if self.boundary_rect.centerx < player.boundary_rect.centerx:
+          self.facing = "right"
+        else:
           self.facing = "left"
+      # else:
+      #   self.state = "patrol"
+      #check if state stays in spot player
+      
+      print(self.state)
         
 
       
