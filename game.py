@@ -1,12 +1,12 @@
 import pygame
 from player import Player
+from platforms import Platforms
 
 class Game:
-    def __init__(self,SCREEN, WIDTH, HEIGHT, LEVELS):
+    def __init__(self,SCREEN, WIDTH, HEIGHT, PLATFORMS_LIST):
         self.SCREEN = SCREEN
         self.WIDTH = WIDTH
         self.HEIGHT = HEIGHT
-        self.LEVELS = LEVELS
 
         self.level = 0  #0 = hubworld
         self.scene = "hubworld"
@@ -38,6 +38,28 @@ class Game:
 
         #player stuff
         self.player = Player()
+        
+        #LEVELZ Creation
+
+        #to be moved later ~ testing
+        E = -1 #used to specify enemy in level
+        level_1 = Platforms(
+            pos =(0,30),
+            structure = [
+                [0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,2,2,0,0,0,0,0,0,2,2,2,2,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,E,0,0,0,0,E,0,0,0,0,0,0],
+                [0,0,0,2,2,0,0,0,E,0,0,1,2,2,2,0,0,2,2,2,2,0,0,0,0],
+                [0,0,0,2,2,0,1,2,2,2,2,2,2,2,2,2,0,2,2,2,2,0,0,0,0]
+            ],
+            platforms_list = PLATFORMS_LIST,
+            player = self.player
+        )
+        self.LEVELS = [level_1]
+
+
+
+
 
     
     def scroll(self,scrollDirection):
@@ -80,7 +102,7 @@ class Game:
             self.bg_rect2.move_ip((-speed),0)
             self.floor_rect2.move_ip((-speed)*floor_speed_mult,0)
             self.LEVELS[self.level].move_platforms((-speed)*floor_speed_mult)
-            self.LEVELS[self.level].move_enemies((-speed)*floor_speed_mult, self.player)
+            self.LEVELS[self.level].move_enemies((-speed)*floor_speed_mult)
 
                 
             
@@ -101,7 +123,7 @@ class Game:
             self.bg_rect2.move_ip((speed),0)
             self.floor_rect2.move_ip((speed)*floor_speed_mult,0)
             self.LEVELS[self.level].move_platforms((speed)*floor_speed_mult)
-            self.LEVELS[self.level].move_enemies((speed)*floor_speed_mult, self.player)
+            self.LEVELS[self.level].move_enemies((speed)*floor_speed_mult)
 
        
         

@@ -5,7 +5,7 @@ from enemy import Enemy
 E = -1 #used to specify enemy in level
 
 class Platforms:
-    def __init__(self, pos, structure, platforms_list):
+    def __init__(self, pos, structure, platforms_list, player):
         self.pos = pos
         self.structure = structure
         self.platforms_list = platforms_list
@@ -14,6 +14,7 @@ class Platforms:
         self.tiles = []
         self.tile_masks = []
         self.enemies = []
+        self.player = player
 
 
         #set up platforms according to structure
@@ -27,7 +28,7 @@ class Platforms:
                 y = yOffset + (row * h)
 
                 if num == E:
-                    enemy = Enemy((x,y + h),(w,h),"Regular",(w,h))
+                    enemy = Enemy((x,y + h),(w,h),"Regular",(w,h), self.player)
                     self.enemies.append(enemy)
 
                 elif num != 0:
@@ -35,13 +36,16 @@ class Platforms:
                     tile.change_surf_to(self.platforms_list[num - 1])
                     self.tiles.append(tile)
 
+    def set_player(self, player):
+        self.player = player
+
     def move_platforms(self, speed):
         for i in range(len(self.tiles)):
             self.tiles[i].rect.move_ip(speed,0)
     
-    def move_enemies(self, speed, player):
+    def move_enemies(self, speed):
         for i in range(len(self.enemies)):
-            self.enemies[i].move(speed, player)
+            self.enemies[i].move(speed)
 
     def draw(self, screen):
         

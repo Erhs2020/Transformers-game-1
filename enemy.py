@@ -6,7 +6,7 @@ from player import Player
 
 class Enemy(Sprite):
 
-    def __init__(self, pos, size, type, PLATFORM_SIZE):
+    def __init__(self, pos, size, type, PLATFORM_SIZE, player):
       Sprite.__init__(self,pos,(600,600), "OPRun.png")
       self.state = "patrol"
       self.dead = False
@@ -22,13 +22,17 @@ class Enemy(Sprite):
       offsetx = self.boundary_rect.left - self.rect.left
       self.rect.top = self.rect.top - offsety - (self.boundary_rect.bottom - self.boundary_rect.top)
       self.rect.left = self.rect.left - offsetx
-      self.enemyrange = 50
+      self.enemyrangeX = 150
+      self.enemyrangeY = 60
 
       #time stuffz
       self.start_time = time.time()
       self.min_wait = 3
       self.max_wait = 5
       self.stoptime = self.start_time + random.uniform(self.min_wait,self.max_wait)
+
+      #player
+      self.player = player
 
     
 
@@ -37,7 +41,9 @@ class Enemy(Sprite):
 
     def draw(self, screen): #use speed to update farthest pos
         self.patrol()
+        self.spotPlayer(self.player)
         self.updateAnimNumber()
+
 
         pygame.draw.line(screen, (149, 52, 235), (self.farthest_left, self.boundary_rect.centery), (self.farthest_right, self.boundary_rect.centery),5)
 
@@ -45,8 +51,7 @@ class Enemy(Sprite):
         self.surf = self.rightAnim if self.facing == "right" else self.leftAnim
         screen.blit(self.surf[self.frame_num], self.rect.topleft)
 
-    def move(self, speed, player):
-      self.spotPlayer(player)
+    def move(self, speed):
       self.farthest_left += speed
       self.farthest_right += speed
       self.speed = random.randint(1, 3)
@@ -90,14 +95,15 @@ class Enemy(Sprite):
         self.stoptime = self.start_time + random.uniform(self.min_wait,self.max_wait)
 
     def spotPlayer(self, player):
-      if abs(player.boundary_rect.centerx - self.boundary_rect.centerx) < self.enemyrange:
+      if abs(player.boundary_rect.centerx - self.boundary_rect.centerx) < self.enemyrangeX and abs(player.boundary_rect.centery - self.boundary_rect.centery) < self.enemyrangeY:
+        print("spotted")
         self.state = "spotplayer"
         if self.boundary_rect.centerx < player.boundary_rect.centerx:
           self.facing = "right"
         else:
           self.facing = "left"
-      # else:
-      #   self.state = "patrol"
+      else:
+        self.state = "patrol"
       #check if state stays in spot player
       
       print(self.state)

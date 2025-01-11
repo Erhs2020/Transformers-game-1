@@ -48,21 +48,21 @@ PLATFORMS_LIST = splitSpritesheet("Images/Platforms.png", 3, 3, 3)
 
 
 
-#to be moved later ~ testing
-level_1 = Platforms(
-    pos =(0,30),
-    structure = [
-        [0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,2,2,0,0,0,0,0,0,2,2,2,2,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-        [0,0,0,2,2,0,0,0,E,0,0,1,2,2,2,0,0,2,2,2,2,0,0,0,0],
-        [0,0,0,2,2,0,1,2,2,2,2,2,2,2,2,2,0,2,2,2,2,0,0,0,0]
-    ],
-    platforms_list = PLATFORMS_LIST
-)
-LEVELS = [level_1]
+# #to be moved later ~ testing
+# level_1 = Platforms(
+#     pos =(0,30),
+#     structure = [
+#         [0,0,0,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+#         [0,0,0,2,2,0,0,0,0,0,0,2,2,2,0,0,0,0,0,0,0,0,0,0,0],
+#         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+#         [0,0,0,2,2,0,0,0,E,0,0,1,2,2,2,0,0,2,2,2,2,0,0,0,0],
+#         [0,0,0,2,2,0,1,2,2,2,2,2,2,2,2,2,0,2,2,2,2,0,0,0,0]
+#     ],
+#     platforms_list = PLATFORMS_LIST
+# )
+# LEVELS = [level_1]
 
-game = Game(SCREEN, WIDTH, HEIGHT,LEVELS)
+game = Game(SCREEN, WIDTH, HEIGHT, PLATFORMS_LIST)
 
 running = True
 while running:
