@@ -53,7 +53,8 @@ class Game:
                 [0,0,0,2,2,0,1,2,2,2,2,2,2,2,2,2,0,2,2,2,2,0,0,0,0]
             ],
             platforms_list = PLATFORMS_LIST,
-            player = self.player
+            player = self.player,
+            screen = self.SCREEN
         )
         self.LEVELS = [level_1]
 

@@ -5,7 +5,7 @@ from enemy import Enemy
 E = -1 #used to specify enemy in level
 
 class Platforms:
-    def __init__(self, pos, structure, platforms_list, player):
+    def __init__(self, pos, structure, platforms_list, player, screen):
         self.pos = pos
         self.structure = structure
         self.platforms_list = platforms_list
@@ -28,7 +28,7 @@ class Platforms:
                 y = yOffset + (row * h)
 
                 if num == E:
-                    enemy = Enemy((x,y + h),(w,h),"Regular",(w,h), self.player)
+                    enemy = Enemy((x,y + h),"Regular",(w,h), self.player)
                     self.enemies.append(enemy)
 
                 elif num != 0:

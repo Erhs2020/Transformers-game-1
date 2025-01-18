@@ -6,7 +6,7 @@ from player import Player
 
 class Enemy(Sprite):
 
-    def __init__(self, pos, size, type, PLATFORM_SIZE, player):
+    def __init__(self, pos, type, PLATFORM_SIZE, player):
       Sprite.__init__(self,pos,(600,600), "OPRun.png")
       self.state = "patrol"
       self.dead = False
