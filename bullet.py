@@ -1,15 +1,23 @@
-#MAKES BULLET CLASSZ
+import pygame
+from sprite import Sprite
+class Bullet(Sprite):
 
-#class variables/class properties
-#pos
-#direction
-#speed
-#color
-#size
+    def __init__(self, startpos, speed, color, size):
+        self.pos = startpos
+        self.speed = speed
+        self.color = color
+        self.size = size
+        self.rect = pygame.Rect(startpos, size)
 
+    #shoots bullet to target
+    def shoot(self, targetpos):
+        pass
 
-#class methods
-#create bullet def__init__
-#shoot
-#collide
-#draw
+    #checks for collision
+    def collide(self):
+        pass
+
+    #draws square bullet on screen
+    def draw(self, SCREEN):
+        pygame.draw.rect(SCREEN, self.color, self.rect)
+        

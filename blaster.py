@@ -1,5 +1,6 @@
 import pygame
 from sprite import Sprite
+from bullet import Bullet
 
 class Blaster(Sprite):
     
@@ -8,8 +9,24 @@ class Blaster(Sprite):
         self.angle = 0
         self.facing = "right"
         self.starting_pos = self.rect.bottomleft
-      
+        self.bullets = []
 
+    #shoots bullet at target
+    def shoot(self, pos):
+        # make bullet at blaster 
+        bullet = Bullet(self.rect.center, 10, (252,109,0), (10,10))
+        self.bullets.append(bullet)
+        # make bullet go to mouse cursor/ pos
+        
+        # Make bullet keep moving until hit edge
+
+
+    
+    #flip blaster on screen vertical
+    def flipBlaster(self):
+        self.surf = pygame.transform.flip(self.surf, False, True)
+
+    #draw blaster on screen
     def draw(self,SCREEN, player):
 
         r_surf, r_rect = self.rotateSprite(self.angle)
@@ -46,6 +63,3 @@ class Blaster(Sprite):
                 self.rect.centery += 1
             else:
                 self.rect.centery -= 4
-
-    def flipBlaster(self):
-        self.surf = pygame.transform.flip(self.surf, False, True)
