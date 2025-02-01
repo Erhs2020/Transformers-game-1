@@ -253,6 +253,10 @@ class Player(Sprite):
                     self.blaster_visable = False
                     self.animationChange("OP GET BLASTER")
                     self.frame_num = 6
+            
+            #shooting
+            if pygame.mouse.get_pressed()[0]:
+                self.blaster.shoot(pygame.mouse.get_pos())
                     
                 
                    

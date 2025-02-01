@@ -17,7 +17,7 @@ class Blaster(Sprite):
         bullet = Bullet(self.rect.center, 10, (252,109,0), (10,10))
         self.bullets.append(bullet)
         # make bullet go to mouse cursor/ pos
-        
+        bullet.shoot(pos)
         # Make bullet keep moving until hit edge
 
 
@@ -30,6 +30,7 @@ class Blaster(Sprite):
     def draw(self,SCREEN, player):
 
         r_surf, r_rect = self.rotateSprite(self.angle)
+        for b in self.bullets: b.draw(SCREEN)
         SCREEN.blit(r_surf, r_rect)
         mouse_pos = pygame.mouse.get_pos()
         self.angle = self.calculateAngle(self.rect.topleft, mouse_pos)
