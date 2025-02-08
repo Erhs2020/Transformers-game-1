@@ -1,6 +1,7 @@
 import pygame
 from sprite import Sprite
 from bullet import Bullet
+import time
 
 class Blaster(Sprite):
     
@@ -10,15 +11,29 @@ class Blaster(Sprite):
         self.facing = "right"
         self.starting_pos = self.rect.bottomleft
         self.bullets = []
+        self.ammo = 20
+
+        #time stuff
+        self.start_time = time.time()
+        self.reloadtime = 2
+        self.stoptime = self.start_time + self.reloadtime
 
     #shoots bullet at target
     def shoot(self, pos):
-        # make bullet at blaster 
-        bullet = Bullet(self.rect.center, 10, (252,109,0), (10,10))
-        self.bullets.append(bullet)
-        # make bullet go to mouse cursor/ pos
-        bullet.shoot(pos)
-        # Make bullet keep moving until hit edge
+        self.start_time = time.time()
+        if self.ammo > 0:
+            # make bullet at blaster 
+            bullet = Bullet(self.rect.center, 10, (252,109,0), (10,10))
+            self.bullets.append(bullet)
+            # make bullet go to mouse cursor/ pos
+            bullet.shoot(pos)
+            self.ammo -= 1
+            # Make bullet keep moving until hit edge
+        else:
+            pass
+            
+
+            
 
 
     
