@@ -106,7 +106,6 @@ class Enemy(Sprite):
         self.state = "patrol"
       #check if state stays in spot player
       
-      print(self.state)
         
 
       

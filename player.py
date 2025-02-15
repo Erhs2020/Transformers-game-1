@@ -9,7 +9,6 @@ class Player(Sprite):
         self.blaster = Blaster()
         self.animationChange("OP IDLE")
         self.mode = "robot"
-        self.blaster_visable = False
         self.size = (600,600)
 
         #jumping variables
@@ -43,7 +42,7 @@ class Player(Sprite):
                 self.states[state] = False
             if self.mode == "robot":
                 self.states["idle"] = True 
-                if self.blaster_visable == False:
+                if self.blaster.showing == False:
                     self.animationChange("OP IDLE") 
                 else:
                     self.animationChange("OP BLASTER IDLE")
@@ -147,7 +146,7 @@ class Player(Sprite):
         if self.states["gettingBlaster"] == True:
             if self.frame_num > 1: 
                 self.states["gettingBlaster"] = False
-                self.blaster_visable = True
+                self.blaster.showing = True
                 self.resetStates()
                
 
@@ -174,9 +173,8 @@ class Player(Sprite):
         self.surf = self.rightAnim if self.facing == "right" else self.leftAnim
         screen.blit(self.surf[self.frame_num], self.rect.topleft)
 
-        if self.blaster_visable == True:
-            
-            self.blaster.draw(screen, self)
+        #draw blaster
+        self.blaster.draw(screen, self)
 
         #get time since game started in ms
         # t = self.clock.get_time() 
@@ -202,7 +200,7 @@ class Player(Sprite):
                 self.facing = "right"
                 if not self.states["running"]:
                     if self.mode == "robot":
-                        if self.blaster_visable == False:
+                        if self.blaster.showing == False:
                             self.animationChange("OP RUN") 
                         else:
                             self.animationChange("OP BLASTER RUN")
@@ -216,7 +214,7 @@ class Player(Sprite):
                 self.facing = "left"
                 if not self.states["running"]:
                     if self.mode == "robot":
-                        if self.blaster_visable == False:
+                        if self.blaster.showing == False:
                             self.animationChange("OP RUN") 
                         else:
                             self.animationChange("OP BLASTER RUN") 
@@ -244,13 +242,13 @@ class Player(Sprite):
                 self.on_ground = False
 
             if pressed_keys[pygame.K_LSHIFT]:
-                if not self.states["gettingBlaster"] and self.blaster_visable == False:
+                if not self.states["gettingBlaster"] and self.blaster.showing == False:
                     self.states["gettingBlaster"] = True
                    
                     self.animationChange("OP GET BLASTER")
-            elif not pressed_keys[pygame.K_LSHIFT] and not self.states["blasterPutAway"] and self.blaster_visable:
+            elif not pressed_keys[pygame.K_LSHIFT] and not self.states["blasterPutAway"] and self.blaster.showing:
                     self.states["blasterPutAway"] = True
-                    self.blaster_visable = False
+                    self.blaster.showing = False
                     self.animationChange("OP GET BLASTER")
                     self.frame_num = 6
             
