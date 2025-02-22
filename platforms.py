@@ -57,3 +57,6 @@ class Platforms:
     #returns self.tiles
     def getTiles(self):
         return self.tiles
+    
+    def getEnemies(self):
+        return self.enemies

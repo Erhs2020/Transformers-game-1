@@ -130,18 +130,48 @@ class Game:
         
             
             
-           
+    def checkcollision(self):
+        #tools:
+        
+        #to get platforms --> self.LEVELS[self.level].getTiles()
+        #to get enemies --> self.LEVELS[self.level].getEnemeis()
+        platforms_list = self.LEVELS[self.level].getTiles()
+        self.enemies = self.LEVELS[self.level].getEnemies()
+        
+        #to get player --> self.player
+        #to get blaster (player blaster) --> self.player.blaster
+        #to check for collision --> the blaster object contains the hit methord
+
+
+        #check for collision between player bullets and platform
+        for platform in platforms_list:
+          plaforms_boundary_rect = platform.get_mask_rect(platform.mask, platform.rect.topleft)
+          if self.player.blaster.hit(platform) == True:
+              print("hit platform")
+
+        
+        #check for collision between enemy bullets and platform
+        #for i in range(len(self.LEVELS[self.level].getTiles())):
+        #   if enemy.blaster.hit(i) == true:
+
+        #check for collision between player bullets and enemies
+        for enemy in self.enemies:
+          if self.player.blaster.hit(enemy) == True:
+              print("hit enemy")
+
+        #check for collision between enemy bullets and player
+        #if enemy.blaster.hit(self.player):
+        #   subtract damage amount from player health
 
 
 
     def PLAY_DA_GAME(self):
-        
-
         #Scroll away from wall
         platforms_list = self.LEVELS[self.level].getTiles()
         pressed_keys = pygame.key.get_pressed() #returns list of certain booleans of what keys are pressed.
         
         collided = self.player.collidedWithPlatforms(platforms_list)
+        self.checkcollision()
         if collided == "left":
             self.scroll("left")
         elif collided == "right":
@@ -158,8 +188,8 @@ class Game:
 
         self.LEVELS[self.level].draw(self.SCREEN)
         
-        
         self.player.update(self.SCREEN, self.LEVELS[self.level])
+
 
 
         

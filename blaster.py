@@ -60,7 +60,9 @@ class Blaster(Sprite):
     def hit(self, other):
         for bullet in self.bullets:
             #bullet collides with something
-            if bullet.colliderect(other) == True:
+            offset = (other.rect.x - bullet.rect.x, other.rect.y - bullet.rect.y)
+            collision_point = bullet.mask.overlap(other.mask, offset)
+            if collision_point:
                 self.bullets.remove(bullet)
                 return True
 

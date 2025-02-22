@@ -43,6 +43,6 @@ enemy sprites have blasters
 try speed and angle to move bullet
 
 
-Add function similar to collidedWithPlatform to game.py
+Finish checkcollsion function in game
 
 

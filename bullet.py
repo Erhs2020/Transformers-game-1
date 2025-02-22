@@ -10,6 +10,8 @@ class Bullet(Sprite):
         self.color = color
         self.size = size
         self.rect = pygame.Rect(startpos, size)
+        self.mask = pygame.mask.Mask((self.rect.width, self.rect.height))
+        self.mask.fill()
         self.dx = 0
         self.dy = 0
 
