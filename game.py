@@ -143,25 +143,21 @@ class Game:
         #to check for collision --> the blaster object contains the hit methord
 
 
-        #check for collision between player bullets and platform
+        #check for collision between player and enemy bullets and platform
         for platform in platforms_list:
-          plaforms_boundary_rect = platform.get_mask_rect(platform.mask, platform.rect.topleft)
-          if self.player.blaster.hit(platform) == True:
-              print("hit platform")
+            plaforms_boundary_rect = platform.get_mask_rect(platform.mask, platform.rect.topleft)
+            if self.player.blaster.hit(platform) == True:
+                print("player hit platform")
+            # if enemy.blaster.hit(platform) == True:
+            #     print("enemy hit platform")
 
-        
-        #check for collision between enemy bullets and platform
-        #for i in range(len(self.LEVELS[self.level].getTiles())):
-        #   if enemy.blaster.hit(i) == true:
-
-        #check for collision between player bullets and enemies
+        #check for collision between player bullets and enemies and player
         for enemy in self.enemies:
-          if self.player.blaster.hit(enemy) == True:
-              print("hit enemy")
+            if self.player.blaster.hit(enemy) == True:
+                print("player hit enemy")
+            # if enemy.blaster.hit(self.player) == True:
+            #     print("enemy hit player")
 
-        #check for collision between enemy bullets and player
-        #if enemy.blaster.hit(self.player):
-        #   subtract damage amount from player health
 
 
 

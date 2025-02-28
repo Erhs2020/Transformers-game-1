@@ -1,12 +1,13 @@
 import pygame
 from sprite import Sprite
 from blaster import Blaster
+import time
 
+MAX_AMMO = 1
 class Player(Sprite):
 
     def __init__(self):
         Sprite.__init__(self,(0,180),(600,600), "OPRun.png")
-        self.blaster = Blaster()
         self.animationChange("OP IDLE")
         self.mode = "robot"
         self.size = (600,600)
@@ -17,6 +18,13 @@ class Player(Sprite):
         self.jump_height = 15
         self.on_ground = True
         self.start_y = self.rect.bottom
+
+        #blaster stuffz
+        self.blaster = Blaster()
+        self.ammo = MAX_AMMO
+        self.start_time = None
+        self.reloadtime = 0.2
+        self.stoptime = None
 
         #set up player clock
         self.clock = pygame.time.Clock()
@@ -174,7 +182,8 @@ class Player(Sprite):
         screen.blit(self.surf[self.frame_num], self.rect.topleft)
 
         #draw blaster
-        self.blaster.draw(screen, self)
+        mouse_pos = pygame.mouse.get_pos()
+        self.blaster.draw(screen, self, mouse_pos)
 
         #get time since game started in ms
         # t = self.clock.get_time() 
@@ -254,7 +263,25 @@ class Player(Sprite):
             
             #shooting
             if pygame.mouse.get_pressed()[0]:
-                self.blaster.shoot(pygame.mouse.get_pos())
+                self.start_time = time.time()
+                if self.ammo > 0 and self.blaster.showing:
+                    # make bullet at blaster 
+                    self.blaster.shoot(pygame.mouse.get_pos())
+                    self.ammo -= 1
+                    # Make bullet keep moving until hit edge
+                else:
+                    #check if there's a start and stop time
+                    if self.start_time != None and self.stoptime != None:
+                        #check if 2 seconds have passed
+                        if time.time() > self.stoptime:
+                            #reset ammo and timers
+                            self.ammo = MAX_AMMO
+                            self.start_time = None
+                            self.stoptime = None
+                    else:
+                        #set timers aka start the reload
+                        self.start_time = time.time()
+                        self.stoptime = self.start_time + self.reloadtime
                     
                 
                    

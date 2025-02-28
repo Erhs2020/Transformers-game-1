@@ -3,11 +3,13 @@ from sprite import Sprite
 import random
 import time
 from player import Player
+from blaster import Blaster
 
 class Enemy(Sprite):
 
     def __init__(self, pos, type, PLATFORM_SIZE, player):
       Sprite.__init__(self,pos,(600,600), "OPRun.png")
+      self.blaster = Blaster()
       self.state = "patrol"
       self.dead = False
       self.facing = "left"
@@ -31,6 +33,12 @@ class Enemy(Sprite):
       self.max_wait = 5
       self.stoptime = self.start_time + random.uniform(self.min_wait,self.max_wait)
 
+      #shoot stuffz
+      self.shoot_start_time = time.time()
+      self.shoot_min_wait = 1
+      self.shoot_max_wait = 5
+      self.shoot_stoptime = self.start_time + random.uniform(self.min_wait,self.max_wait)
+
       #player
       self.player = player
 
@@ -44,12 +52,21 @@ class Enemy(Sprite):
         self.spotPlayer(self.player)
         self.updateAnimNumber()
 
+        if self.state == "spotplayer":
+          self.shoot_start_time = time.time()
+          self.shoot_stoptime = self.start_time + random.uniform(self.min_wait,self.max_wait)
+          self.blaster.shoot(self.player.boundary_rect.center)
+          print("shoot")
+
 
         pygame.draw.line(screen, (149, 52, 235), (self.farthest_left, self.boundary_rect.centery), (self.farthest_right, self.boundary_rect.centery),5)
 
         #keep playing animation by indexing from animation list.
         self.surf = self.rightAnim if self.facing == "right" else self.leftAnim
         screen.blit(self.surf[self.frame_num], self.rect.topleft)
+        
+        #draw blaster
+        self.blaster.draw(screen, self, (0,0))
 
     def move(self, speed):
       self.farthest_left += speed
