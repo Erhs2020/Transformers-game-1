@@ -11,6 +11,7 @@ class Player(Sprite):
         self.animationChange("OP IDLE")
         self.mode = "robot"
         self.size = (600,600)
+        self.type = "player"
 
         #jumping variables
         self.velocity_y = 0

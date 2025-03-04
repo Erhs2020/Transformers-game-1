@@ -22,6 +22,7 @@ class Blaster(Sprite):
             self.bullets.append(bullet)
             # make bullet go to mouse cursor/ pos
             bullet.shoot(pos)
+            print(pos)
     
     #flip blaster on screen vertical
     def flipBlaster(self):
@@ -67,11 +68,14 @@ class Blaster(Sprite):
             self.rect.topleft = (px,py - 7)
         else:
             self.rect.topright = (px,py - 7)
-        if owner.states["running"]:
+        if(owner.type == "player" and owner.states["running"]) or (owner.type == "enemy" and owner.state == "patrol"):
             if owner.frame_num % 2 == 0:
                 self.rect.centery += 1
             else:
                 self.rect.centery -= 4
+
+
+        return r_surf, r_rect
 
     #draw blaster on screen
     def draw(self,SCREEN, owner, target_pos):

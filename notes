@@ -47,4 +47,6 @@ Finish checkcollsion function in game
 
 enemy blaster needs to show 1 thing, finish rotate cords methord in blaster class
 
+compare time.time to stoptime make sure the values are within the proper range.
+
 

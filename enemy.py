@@ -10,6 +10,9 @@ class Enemy(Sprite):
     def __init__(self, pos, type, PLATFORM_SIZE, player):
       Sprite.__init__(self,pos,(600,600), "OPRun.png")
       self.blaster = Blaster()
+      self.blaster.showing = True
+      self.type = "enemy"
+
       self.state = "patrol"
       self.dead = False
       self.facing = "left"
@@ -17,7 +20,7 @@ class Enemy(Sprite):
       self.farthest_left = pos[0] - PLATFORM_SIZE[0] * 1.5
       self.farthest_right = pos[0] + PLATFORM_SIZE[0] * 1.5
       self.steps = 0
-      self.animationChange("OP IDLE")
+      self.animationChange("OP RUN")
       self.frame_num = 0
       self.boundary_rect = self.get_mask_rect(self.mask, self.rect.topleft)
       offsety = self.boundary_rect.top - self.rect.top
@@ -35,26 +38,30 @@ class Enemy(Sprite):
 
       #shoot stuffz
       self.shoot_start_time = time.time()
-      self.shoot_min_wait = 1
-      self.shoot_max_wait = 5
-      self.shoot_stoptime = self.start_time + random.uniform(self.min_wait,self.max_wait)
+      self.shoot_min_wait = 0
+      self.shoot_max_wait = 1
+      self.shoot_stoptime = self.start_time + random.randint(self.shoot_min_wait,self.shoot_max_wait)
 
       #player
       self.player = player
-
+      self.ticks = 0
     
 
       print(self.rect.topleft)
     
 
     def draw(self, screen): #use speed to update farthest pos
+        
         self.patrol()
         self.spotPlayer(self.player)
-        self.updateAnimNumber()
+        if self.ticks % 10 == 0:
+            self.updateAnimNumber()
+        self.ticks +=1
 
-        if self.state == "spotplayer":
+        #shoot
+        if self.state == "spotplayer" and time.time() > self.shoot_stoptime:
           self.shoot_start_time = time.time()
-          self.shoot_stoptime = self.start_time + random.uniform(self.min_wait,self.max_wait)
+          self.shoot_stoptime = self.start_time + random.randint(self.shoot_min_wait * 1000,self.shoot_max_wait * 1000)
           self.blaster.shoot(self.player.boundary_rect.center)
           print("shoot")
 

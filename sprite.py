@@ -56,6 +56,7 @@ animDictionary = {
         "allFramesImage": "Images/OPBlasterIdle.png"
     },
     
+    
 }
 
 class Sprite(pygame.sprite.Sprite):
