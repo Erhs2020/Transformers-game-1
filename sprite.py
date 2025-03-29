@@ -3,16 +3,16 @@ import math
 
 animDictionary = {
     "OP RUN": {
-        "numFrames": 4,
+        "numFrames": 8,
         "numRows": 3,
         "numCols": 3,
-        "allFramesImage": "Images/OPRunOLD.png"
+        "allFramesImage": "Images/Optimus Prime walk.png"
     },
     "OP IDLE": {
         "numFrames": 1,
         "numRows": 3,
         "numCols": 3,
-        "allFramesImage": "Images/OPTransform.png"
+        "allFramesImage": "Images/Optimus Prime walk.png"
     },
 
     "OP TRANSFORM": {

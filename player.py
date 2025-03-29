@@ -4,13 +4,14 @@ from blaster import Blaster
 import time
 
 MAX_AMMO = 1
+GROUNDY = 650
 class Player(Sprite):
 
     def __init__(self):
         Sprite.__init__(self,(0,180),(600,600), "OPRun.png")
         self.animationChange("OP IDLE")
         self.mode = "robot"
-        self.size = (600,600)
+        self.size = (900,900)
         self.type = "player"
 
         #jumping variables
@@ -117,8 +118,8 @@ class Player(Sprite):
 
 
         #Ensure the player doesn't fall through the ground
-        if self.rect.centery >= 519:
-            self.rect.centery = 519
+        if self.boundary_rect.bottom >= GROUNDY:
+            self.boundary_rect.bottom = GROUNDY
             self.on_ground = True
             self.velocity_y = 0
 
@@ -175,7 +176,7 @@ class Player(Sprite):
 
         # start_pos = (self.rect.left + 82, self.rect.top + 70)
         # end_pos = (self.rect.left + 100, self.rect.top + 70)
-        # pygame.draw.line(screen, (0,255,0), start_pos,end_pos)
+        pygame.draw.line(screen, (0,255,0), (0, GROUNDY), (500, GROUNDY), 6)
 
         
         #keep playing animation by indexing from animation list.

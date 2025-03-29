@@ -6,8 +6,8 @@ from platforms import Platforms
 
 pygame.init()
 
-WIDTH = 700
-HEIGHT = 400
+WIDTH = 1400
+HEIGHT = 800
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 FPS = 60
