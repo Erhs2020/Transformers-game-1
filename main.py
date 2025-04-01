@@ -44,8 +44,21 @@ def splitSpritesheet(image, numRows, numCols, numFrames):
                 framesAdded += 1
     return platforms_list
 
-PLATFORMS_LIST = splitSpritesheet("Images/Platforms.png", 3, 3, 3)
 
+def createPlatformsList(platform_images):
+    platforms_list = []
+
+    #create and append the mask surface of each platform image to the list
+    for img in platform_images:
+        platform_surf = pygame.image.load("Images/Platforms/"+img)
+        platform_mask = pygame.mask.from_surface(platform_surf)
+        platforms_list.append(platform_surf)
+
+
+    return platforms_list
+
+# PLATFORMS_LIST = splitSpritesheet("Images/Platforms.png", 3, 3, 3)
+PLATFORMS_LIST = createPlatformsList(["Platform_1.png"])
 
 
 # #to be moved later ~ testing

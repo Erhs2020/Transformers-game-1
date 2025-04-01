@@ -21,8 +21,8 @@ class Platforms:
         for row in range(numRows):
             for col in range(len(structure[row])):
                 num = self.structure[row][col]
-                w = 60
-                h = 60
+                w = 100
+                h = 100
                 xOffset, yOffset = self.pos
                 x = xOffset + (col *  w)
                 y = yOffset + (row * h)
@@ -35,6 +35,8 @@ class Platforms:
                     tile = Sprite((x,y), (w,h), "Platforms.png")
                     tile.change_surf_to(self.platforms_list[num - 1])
                     self.tiles.append(tile)
+
+        print(len(self.tiles))
 
     def set_player(self, player):
         self.player = player
