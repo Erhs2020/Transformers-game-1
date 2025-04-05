@@ -58,7 +58,7 @@ def createPlatformsList(platform_images):
     return platforms_list
 
 # PLATFORMS_LIST = splitSpritesheet("Images/Platforms.png", 3, 3, 3)
-PLATFORMS_LIST = createPlatformsList(["Platform_1.png"])
+PLATFORMS_LIST = createPlatformsList(["Platform_1.png","Platform_2.png","Platform_6(Slab).png"])
 
 
 # #to be moved later ~ testing

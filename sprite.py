@@ -75,7 +75,7 @@ class Sprite(pygame.sprite.Sprite):
         self.boundary_rect = None
         
         #AllFramesImageSize
-        self.AFIS = (300,300)
+        self.AFIS = (0,0)
 
     def change_surf_to(self, new_surf):
         self.surf = new_surf

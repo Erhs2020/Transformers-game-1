@@ -2,6 +2,8 @@ import pygame
 from sprite import Sprite
 from enemy import Enemy
 
+WIDTH = 1400
+HEIGHT = 800
 E = -1 #used to specify enemy in level
 
 class Platforms:
@@ -21,8 +23,8 @@ class Platforms:
         for row in range(numRows):
             for col in range(len(structure[row])):
                 num = self.structure[row][col]
-                w = 100
-                h = 100
+                w = 300
+                h = 300
                 xOffset, yOffset = self.pos
                 x = xOffset + (col *  w)
                 y = yOffset + (row * h)
@@ -50,9 +52,10 @@ class Platforms:
             self.enemies[i].move(speed)
 
     def draw(self, screen):
-        
+        "if tile xpos in screenbox(min: 0, max: WIDTH)"
         for tile in self.tiles:
-            tile.draw(screen)
+            if tile.rect.left < WIDTH and tile.rect.right > 0:
+                tile.draw(screen)
         for enemy in self.enemies:
             enemy.draw(screen)
     
