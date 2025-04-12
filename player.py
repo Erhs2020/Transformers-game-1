@@ -16,8 +16,8 @@ class Player(Sprite):
 
         #jumping variables
         self.velocity_y = 0
-        self.gravity = 1
-        self.jump_height = 15
+        self.gravity = 2
+        self.jump_height = 30
         self.on_ground = True
         self.start_y = self.rect.bottom
 
@@ -71,10 +71,10 @@ class Player(Sprite):
 
                 if collision_point and self.boundary_rect.top >= platform.rect.top:
                     #collided on left side of the platform.
-                    if self.boundary_rect.left <= platform.rect.left + 10:
+                    if self.boundary_rect.left <= platform.rect.left + 50:
                         return "left"
                     #collided on right side of the plaform.
-                    if self.boundary_rect.right >= platform.rect.right - 10:
+                    if self.boundary_rect.right >= platform.rect.right - 50:
                         return "right"
         return False
     
@@ -99,7 +99,7 @@ class Player(Sprite):
 
             #player falling
             if collision_point and self.velocity_y < 0:
-                if self.boundary_rect.bottom > platform.rect.top and (self.boundary_rect.right >= platform.rect.left + 10 and self.boundary_rect.left <= platform.rect.right - 10):
+                if self.boundary_rect.bottom > platform.rect.top and (self.boundary_rect.right >= platform.rect.left + 50 and self.boundary_rect.left <= platform.rect.right - 50):
                     downoffset = self.boundary_rect.bottom - self.rect.top
                     self.boundary_rect.bottom = platform.rect.top
                     self.rect.top = self.boundary_rect.bottom - downoffset
@@ -109,7 +109,7 @@ class Player(Sprite):
             elif collision_point:
                 #player hit roof of platform
                 if self.velocity_y > 0:
-                    if self.boundary_rect.top < platform.rect.bottom and (self.boundary_rect.right >= platform.rect.left + 10 and self.boundary_rect.left <= platform.rect.right - 10):
+                    if self.boundary_rect.top < platform.rect.bottom and (self.boundary_rect.right >= platform.rect.left + 50 and self.boundary_rect.left <= platform.rect.right - 50):
                         upoffset = self.boundary_rect.top - self.rect.top
                         self.boundary_rect.top = platform.rect.bottom + 10
                         self.rect.top = self.boundary_rect.top - upoffset
@@ -119,7 +119,9 @@ class Player(Sprite):
 
         #Ensure the player doesn't fall through the ground
         if self.boundary_rect.bottom >= GROUNDY:
+            downoffset = self.boundary_rect.bottom - self.rect.top
             self.boundary_rect.bottom = GROUNDY
+            self.rect.top = self.boundary_rect.bottom - downoffset
             self.on_ground = True
             self.velocity_y = 0
 
@@ -144,10 +146,10 @@ class Player(Sprite):
         #     screen.blit(mask_surface, self.rect.topleft)
 
         #draw collision bordor for platforms
-        platform_tiles = platforms_list.getTiles()
-        for tile in platform_tiles:
-            tile.draw_collsion_box(screen)
-            pygame.draw.circle(screen, (0,0,255), tile.rect.center, 5)
+        # platform_tiles = platforms_list.getTiles()
+        # for tile in platform_tiles:
+            # tile.draw_collsion_box(screen)
+            # pygame.draw.circle(screen, (0,0,255), tile.rect.center, 5)
 
         if self.states["transforming"] == True:
             if self.mode == "car" and self.frame_num > 7: self.states["transforming"] = False
@@ -167,16 +169,16 @@ class Player(Sprite):
             
             
 
-        pygame.draw.rect(screen, (255, 0, 0), self.rect,2)
+        # pygame.draw.rect(screen, (255, 0, 0), self.rect,2)
         
         # pygame.draw.rect(screen, (255, 0, 0), self.universeal_rect,2)
 
-        mask_rect = self.get_mask_rect(self.mask, self.rect.topleft)
-        pygame.draw.rect(screen,(0,255,0), mask_rect, 2)
+        # mask_rect = self.get_mask_rect(self.mask, self.rect.topleft)
+        # pygame.draw.rect(screen,(0,255,0), mask_rect, 2)
 
         # start_pos = (self.rect.left + 82, self.rect.top + 70)
         # end_pos = (self.rect.left + 100, self.rect.top + 70)
-        pygame.draw.line(screen, (0,255,0), (0, GROUNDY), (500, GROUNDY), 6)
+        # pygame.draw.line(screen, (0,255,0), (0, GROUNDY), (500, GROUNDY), 6)
 
         
         #keep playing animation by indexing from animation list.

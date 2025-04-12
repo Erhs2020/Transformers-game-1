@@ -10,7 +10,7 @@ WIDTH = 1400
 HEIGHT = 800
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
-FPS = 60
+FPS = 30
 E = -1 #used to specify enemy in level
 
 

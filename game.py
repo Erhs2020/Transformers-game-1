@@ -10,7 +10,7 @@ class Game:
 
         self.level = 0  #0 = hubworld
         self.scene = "hubworld"
-        self.scroll_speed = 1
+        self.scroll_speed = 2
         self.running_scroll_speed = 3
         self.direction = "right"
 
@@ -44,12 +44,12 @@ class Game:
         #to be moved later ~ testing
         E = -1 #used to specify enemy in level
         level_1 = Platforms(
-            pos =(0,30),
+            pos =(0,-250),
             structure = [
                 # [0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                 # [0,0,0,1,1,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0],
-                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                [0,0,0,1,1,0,0,0,0,0,0,3,1,1,3,0,0,3,1,1,3,0],
+                [0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,0,0,0,0,0,0,0,0,3,1,1,3,0,0,3,1,1,3,0],
                 [0,0,0,1,1,0,1,1,1,1,1,1,2,2,1,1,0,1,2,2,1,0]
             ],
             platforms_list = PLATFORMS_LIST,
