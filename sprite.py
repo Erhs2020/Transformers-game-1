@@ -72,16 +72,20 @@ class Sprite(pygame.sprite.Sprite):
         self.facing = "right"
         self.size = size
         self.mask = pygame.mask.from_surface(self.surf)
-        self.boundary_rect = None
+        self.boundary_rect = self.get_mask_rect(self.mask,self.rect.topleft)
         
         #AllFramesImageSize
         self.AFIS = (0,0)
+    
+    def update_boundary_rect(self):
+        self.boundary_rect.left = self.rect.left
 
     def change_surf_to(self, new_surf):
         self.surf = new_surf
         self.surf = pygame.transform.scale(self.surf, self.size)
         self.rect = self.surf.get_rect(topleft = self.rect.topleft)
         self.mask = pygame.mask.from_surface(self.surf)
+        self.boundary_rect = self.get_mask_rect(self.mask,self.rect.topleft)
     
     #draws red outline on sprite's mask border
     def draw_collsion_box(self, screen ):

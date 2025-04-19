@@ -54,8 +54,10 @@ class Platforms:
     def draw(self, screen):
         "if tile xpos in screenbox(min: 0, max: WIDTH)"
         for tile in self.tiles:
+            tile.update_boundary_rect()
             if tile.rect.left < WIDTH and tile.rect.right > 0:
                 tile.draw(screen)
+                pygame.draw.line(screen, (244,0,0), tile.boundary_rect.topleft, tile.boundary_rect.topright,10)
         for enemy in self.enemies:
             enemy.draw(screen)
     

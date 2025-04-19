@@ -17,7 +17,7 @@ class Player(Sprite):
         #jumping variables
         self.velocity_y = 0
         self.gravity = 2
-        self.jump_height = 30
+        self.jump_height = 35
         self.on_ground = True
         self.start_y = self.rect.bottom
 
@@ -99,9 +99,9 @@ class Player(Sprite):
 
             #player falling
             if collision_point and self.velocity_y < 0:
-                if self.boundary_rect.bottom > platform.rect.top and (self.boundary_rect.right >= platform.rect.left + 50 and self.boundary_rect.left <= platform.rect.right - 50):
+                if self.boundary_rect.bottom > platform.boundary_rect.top and (self.boundary_rect.right >= platform.boundary_rect.left + 0 and self.boundary_rect.left <= platform.boundary_rect.right - 0):
                     downoffset = self.boundary_rect.bottom - self.rect.top
-                    self.boundary_rect.bottom = platform.rect.top
+                    self.boundary_rect.bottom = platform.boundary_rect.top
                     self.rect.top = self.boundary_rect.bottom - downoffset
                     self.on_ground = True
                     self.velocity_y = 0

@@ -11,7 +11,8 @@ class Game:
         self.level = 0  #0 = hubworld
         self.scene = "hubworld"
         self.scroll_speed = 2
-        self.running_scroll_speed = 3
+        self.running_scroll_speed = 4
+        self.vehicle_scroll_speed = 6
         self.direction = "right"
 
 
@@ -48,9 +49,9 @@ class Game:
             structure = [
                 # [0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                 # [0,0,0,1,1,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0],
-                [0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,0,0,3,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                 [0,0,0,0,0,0,0,0,0,0,0,3,1,1,3,0,0,3,1,1,3,0],
-                [0,0,0,1,1,0,1,1,1,1,1,1,2,2,1,1,0,1,2,2,1,0]
+                [0,0,0,1,3,0,1,1,1,1,1,1,2,2,1,1,0,1,2,2,1,0]
             ],
             platforms_list = PLATFORMS_LIST,
             player = self.player,
