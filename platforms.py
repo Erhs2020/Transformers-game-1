@@ -35,6 +35,7 @@ class Platforms:
 
                 elif num != 0:
                     tile = Sprite((x,y), (w,h), "Platforms.png")
+                    tile.color = (255,0,0)
                     tile.change_surf_to(self.platforms_list[num - 1])
                     self.tiles.append(tile)
 
@@ -57,7 +58,7 @@ class Platforms:
             tile.update_boundary_rect()
             if tile.rect.left < WIDTH and tile.rect.right > 0:
                 tile.draw(screen)
-                pygame.draw.line(screen, (244,0,0), tile.boundary_rect.topleft, tile.boundary_rect.topright,10)
+                pygame.draw.line(screen, tile.color, tile.boundary_rect.topleft, tile.boundary_rect.topright,10)
         for enemy in self.enemies:
             enemy.draw(screen)
     

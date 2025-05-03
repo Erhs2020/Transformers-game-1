@@ -59,3 +59,9 @@ Offset might be hint about vetical glitch thingy. Collisions are working better.
 
 
 WHY IS SMALL PLATFORM COLLISON BAD????
+
+LOOK AT LINE 71 in player.py
+
+
+FIX THE SMALL PLATFORMS >:(
+Something wrong with small platforms check code that hits roof.

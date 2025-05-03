@@ -64,18 +64,17 @@ class Player(Sprite):
     # checks if player is colliding with the platform masks: returns true is player overlapping with platform masks, returns false if not
     def collidedWithPlatforms(self, platforms_list):
         for platform in platforms_list:
-            collision_offset = pygame.sprite.collide_mask(self, platform)
-            if collision_offset:
-                collision_point = self.mask.overlap(platform.mask, collision_offset)
-                self.boundary_rect = self.get_mask_rect(self.mask,self.rect.topleft)
+            self.boundary_rect = self.get_mask_rect(self.mask,self.rect.topleft)
+            offset = (platform.rect.x - self.rect.x, platform.rect.y - self.rect.y)
+            collision_point = self.mask.overlap(platform.mask, offset)
 
-                if collision_point and self.boundary_rect.top >= platform.rect.top:
-                    #collided on left side of the platform.
-                    if self.boundary_rect.left <= platform.rect.left + 50:
-                        return "left"
-                    #collided on right side of the plaform.
-                    if self.boundary_rect.right >= platform.rect.right - 50:
-                        return "right"
+            if collision_point: #and (self.boundary_rect.bottom >= GROUNDY - 10) or self.boundary_rect.bottom >= platform.boundary_rect.top - 10):
+                #collided on left side of the platform.
+                if self.boundary_rect.left <= platform.boundary_rect.left:
+                    return "left"
+                #collided on right side of the plaform.
+                if self.boundary_rect.right >= platform.boundary_rect.right:
+                    return "right"
         return False
     
 
@@ -97,30 +96,35 @@ class Player(Sprite):
             collision_point = self.mask.overlap(platform.mask, offset)
             self.boundary_rect = self.get_mask_rect(self.mask,self.rect.topleft)
 
+            platform.color = (255,0,0)
             #player falling
             if collision_point and self.velocity_y < 0:
-                if self.boundary_rect.bottom > platform.boundary_rect.top and (self.boundary_rect.right >= platform.boundary_rect.left + 0 and self.boundary_rect.left <= platform.boundary_rect.right - 0):
+                if self.boundary_rect.bottom in range(platform.boundary_rect.top - 2, platform.boundary_rect.top + 10) and (self.boundary_rect.right >= platform.boundary_rect.left and self.boundary_rect.left <= platform.boundary_rect.right):
                     downoffset = self.boundary_rect.bottom - self.rect.top
-                    self.boundary_rect.bottom = platform.boundary_rect.top
+                    self.boundary_rect.bottom = platform.boundary_rect.top - 1
                     self.rect.top = self.boundary_rect.bottom - downoffset
                     self.on_ground = True
                     self.velocity_y = 0
+                    platform.color = (0,255,0)
+
 
             elif collision_point:
                 #player hit roof of platform
                 if self.velocity_y > 0:
-                    if self.boundary_rect.top < platform.rect.bottom and (self.boundary_rect.right >= platform.rect.left + 50 and self.boundary_rect.left <= platform.rect.right - 50):
+                    if self.boundary_rect.top < platform.boundary_rect.bottom and (self.boundary_rect.right >= platform.boundary_rect.left and self.boundary_rect.left <= platform.boundary_rect.right):
+                        print("Player hit roof of platform!!!!!!!!")
                         upoffset = self.boundary_rect.top - self.rect.top
-                        self.boundary_rect.top = platform.rect.bottom + 10
+                        self.boundary_rect.top = platform.boundary_rect.bottom + 10
                         self.rect.top = self.boundary_rect.top - upoffset
                         self.velocity_y = 0
+                        platform.color = (0,0,255)
                 
 
 
         #Ensure the player doesn't fall through the ground
         if self.boundary_rect.bottom >= GROUNDY:
             downoffset = self.boundary_rect.bottom - self.rect.top
-            self.boundary_rect.bottom = GROUNDY
+            self.boundary_rect.bottom = GROUNDY - 1
             self.rect.top = self.boundary_rect.bottom - downoffset
             self.on_ground = True
             self.velocity_y = 0
