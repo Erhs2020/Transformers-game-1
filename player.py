@@ -99,25 +99,44 @@ class Player(Sprite):
             platform.color = (255,0,0)
             #player falling
             if collision_point and self.velocity_y < 0:
-                if self.boundary_rect.bottom in range(platform.boundary_rect.top - 2, platform.boundary_rect.top + 10) and (self.boundary_rect.right >= platform.boundary_rect.left and self.boundary_rect.left <= platform.boundary_rect.right):
+                # if self.boundary_rect.bottom in range(platform.boundary_rect.top - 2, platform.boundary_rect.top + 10) and (self.boundary_rect.right >= platform.boundary_rect.left and self.boundary_rect.left <= platform.boundary_rect.right):
+                #     downoffset = self.boundary_rect.bottom - self.rect.top
+                #     self.boundary_rect.bottom = platform.boundary_rect.top - 1
+                #     self.rect.top = self.boundary_rect.bottom - downoffset
+                #     self.on_ground = True
+                #     self.velocity_y = 0
+                #     platform.color = (0,255,0)
+                collision_y_global = self.rect.top + collision_point[1]
+                distance_from_platform_top = collision_y_global - platform.boundary_rect.top
+                if 0 <= distance_from_platform_top <= 10:
                     downoffset = self.boundary_rect.bottom - self.rect.top
-                    self.boundary_rect.bottom = platform.boundary_rect.top - 1
-                    self.rect.top = self.boundary_rect.bottom - downoffset
+                    collision_y = self.boundary_rect.top + collision_point[1]
+                    self.boundary_rect.bottom = collision_y - 1
+                    self.rect.top = self.boundary_rect.bottom - downoffset - 50
                     self.on_ground = True
                     self.velocity_y = 0
                     platform.color = (0,255,0)
 
-
-            elif collision_point:
-                #player hit roof of platform
-                if self.velocity_y > 0:
-                    if self.boundary_rect.top < platform.boundary_rect.bottom and (self.boundary_rect.right >= platform.boundary_rect.left and self.boundary_rect.left <= platform.boundary_rect.right):
-                        print("Player hit roof of platform!!!!!!!!")
-                        upoffset = self.boundary_rect.top - self.rect.top
-                        self.boundary_rect.top = platform.boundary_rect.bottom + 10
-                        self.rect.top = self.boundary_rect.top - upoffset
-                        self.velocity_y = 0
-                        platform.color = (0,0,255)
+            # elif collision_point:
+            #     #player hit roof of platform
+            #     if self.velocity_y > 0:
+            #         if self.boundary_rect.top < platform.boundary_rect.bottom and (self.boundary_rect.right >= platform.boundary_rect.left and self.boundary_rect.left <= platform.boundary_rect.right):
+            #             print("Player hit roof of platform!!!!!!!!")
+            #             upoffset = self.boundary_rect.top - self.rect.top
+            #             self.boundary_rect.top = platform.boundary_rect.bottom + 10
+            #             self.rect.top = self.boundary_rect.top - upoffset
+            #             self.velocity_y = 0
+            #             platform.color = (0,0,255)
+            elif collision_point and self.velocity_y > 0:
+                collision_y_global = self.rect.top + collision_point[1]
+                distance_from_platform_top = platform.boundary_rect.bottom - collision_y_global
+                if 0 <= distance_from_platform_top <= 10:
+                    upoffset = self.boundary_rect.top - self.rect.top
+                    collision_y = self.boundary_rect.top + collision_point[1]
+                    self.boundary_rect.top = collision_y + 1
+                    self.rect.top = self.boundary_rect.top - upoffset
+                    self.velocity_y = -10
+                    platform.color = (0,0,255)
                 
 
 
