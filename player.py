@@ -68,7 +68,7 @@ class Player(Sprite):
             offset = (platform.rect.x - self.rect.x, platform.rect.y - self.rect.y)
             collision_point = self.mask.overlap(platform.mask, offset)
 
-            if collision_point: #and (self.boundary_rect.bottom >= GROUNDY - 10) or self.boundary_rect.bottom >= platform.boundary_rect.top - 10):
+            if collision_point and self.boundary_rect.bottom > platform.boundary_rect.top + 10: #and (self.boundary_rect.bottom >= GROUNDY - 10) or self.boundary_rect.bottom >= platform.boundary_rect.top - 10):
                 #collided on left side of the platform.
                 if self.boundary_rect.left <= platform.boundary_rect.left:
                     return "left"

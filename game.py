@@ -85,12 +85,9 @@ class Game:
         "leader = follower"
         "follower = leader"
 
-        
-        
-    
 
         
-        if scrollDirection == "right":
+        if scrollDirection == "right": #looks like player moving right
             if self.bg_rect1.right <= 0:
                 self.bg_rect1.left = self.bg_rect2.right
             if self.bg_rect2.right <= 0:
@@ -106,12 +103,8 @@ class Game:
             self.LEVELS[self.level].move_platforms((-speed)*floor_speed_mult)
             self.LEVELS[self.level].move_enemies((-speed)*floor_speed_mult)
 
-                
             
-            
-           
-            
-        if scrollDirection == "left":
+        if scrollDirection == "left": #looks like player moving left 
             if self.bg_rect1.left >= self.WIDTH:
                 self.bg_rect1.right = self.bg_rect2.left
             if self.bg_rect2.left >= self.WIDTH:
