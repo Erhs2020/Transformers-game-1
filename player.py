@@ -5,6 +5,10 @@ import time
 
 MAX_AMMO = 1
 GROUNDY = 650
+HITBOX_OFFSET_LEFT = 150
+HITBOX_OFFSET_TOP = 145
+HITBOX_WIDTH = 50
+HITBOX_HEIGHT = 190
 class Player(Sprite):
 
     def __init__(self):
@@ -13,6 +17,11 @@ class Player(Sprite):
         self.mode = "robot"
         self.size = (900,900)
         self.type = "player"
+
+        #hitbox
+        self.hitbox = pygame.Rect(self.boundary_rect.bottomleft, (HITBOX_WIDTH, HITBOX_HEIGHT))
+        self.hitbox_mask = pygame.mask.Mask((self.hitbox.width, self.hitbox.height))
+        self.hitbox_mask.fill()
 
         #jumping variables
         self.velocity_y = 0
@@ -64,16 +73,16 @@ class Player(Sprite):
     # checks if player is colliding with the platform masks: returns true is player overlapping with platform masks, returns false if not
     def collidedWithPlatforms(self, platforms_list):
         for platform in platforms_list:
-            self.boundary_rect = self.get_mask_rect(self.mask,self.rect.topleft)
-            offset = (platform.rect.x - self.rect.x, platform.rect.y - self.rect.y)
-            collision_point = self.mask.overlap(platform.mask, offset)
+            # self.boundary_rect = self.get_mask_rect(self.mask,self.rect.topleft)
+            offset = (platform.rect.x - self.hitbox.x, platform.rect.y - self.hitbox.y)
+            collision_point = self.hitbox_mask.overlap(platform.mask, offset)
 
-            if collision_point and self.boundary_rect.bottom > platform.boundary_rect.top + 10: #and (self.boundary_rect.bottom >= GROUNDY - 10) or self.boundary_rect.bottom >= platform.boundary_rect.top - 10):
+            if collision_point and self.hitbox.bottom > platform.boundary_rect.top + 10: #and (self.boundary_rect.bottom >= GROUNDY - 10) or self.boundary_rect.bottom >= platform.boundary_rect.top - 10):
                 #collided on left side of the platform.
-                if self.boundary_rect.left <= platform.boundary_rect.left:
+                if self.hitbox.left <= platform.boundary_rect.left:
                     return "left"
                 #collided on right side of the plaform.
-                if self.boundary_rect.right >= platform.boundary_rect.right:
+                if self.hitbox.right >= platform.boundary_rect.right:
                     return "right"
         return False
     
@@ -88,45 +97,29 @@ class Player(Sprite):
         
         #reset the ground state
         self.on_ground = False 
+        self.hitbox.center = (self.rect.left + HITBOX_OFFSET_LEFT, self.rect.top + HITBOX_OFFSET_TOP)
         
         #check for collision with the platforms using masks
         for platform in platforms_list.getTiles():
             #check for mask collision
-            offset = (platform.rect.x - self.rect.x, platform.rect.y - self.rect.y)
-            collision_point = self.mask.overlap(platform.mask, offset)
+            offset = (platform.rect.x - self.hitbox.x, platform.rect.y - self.hitbox.y)
+            collision_point = self.hitbox_mask.overlap(platform.mask, offset)
             self.boundary_rect = self.get_mask_rect(self.mask,self.rect.topleft)
 
             platform.color = (255,0,0)
             #player falling
             if collision_point and self.velocity_y < 0:
-                # if self.boundary_rect.bottom in range(platform.boundary_rect.top - 2, platform.boundary_rect.top + 10) and (self.boundary_rect.right >= platform.boundary_rect.left and self.boundary_rect.left <= platform.boundary_rect.right):
-                #     downoffset = self.boundary_rect.bottom - self.rect.top
-                #     self.boundary_rect.bottom = platform.boundary_rect.top - 1
-                #     self.rect.top = self.boundary_rect.bottom - downoffset
-                #     self.on_ground = True
-                #     self.velocity_y = 0
-                #     platform.color = (0,255,0)
-                collision_y_global = self.rect.top + collision_point[1]
+                collision_y_global = self.hitbox.top + collision_point[1]
                 distance_from_platform_top = collision_y_global - platform.boundary_rect.top
                 if 0 <= distance_from_platform_top <= 10:
-                    downoffset = self.boundary_rect.bottom - self.rect.top
-                    collision_y = self.boundary_rect.top + collision_point[1]
-                    self.boundary_rect.bottom = collision_y - 1
-                    self.rect.top = self.boundary_rect.bottom - downoffset - 50
+                    downoffset = self.hitbox.bottom - self.rect.top
+                    collision_y = self.hitbox.top + collision_point[1]
+                    self.hitbox.bottom = collision_y - 1
+                    self.rect.top = self.hitbox.bottom - downoffset
                     self.on_ground = True
                     self.velocity_y = 0
                     platform.color = (0,255,0)
 
-            # elif collision_point:
-            #     #player hit roof of platform
-            #     if self.velocity_y > 0:
-            #         if self.boundary_rect.top < platform.boundary_rect.bottom and (self.boundary_rect.right >= platform.boundary_rect.left and self.boundary_rect.left <= platform.boundary_rect.right):
-            #             print("Player hit roof of platform!!!!!!!!")
-            #             upoffset = self.boundary_rect.top - self.rect.top
-            #             self.boundary_rect.top = platform.boundary_rect.bottom + 10
-            #             self.rect.top = self.boundary_rect.top - upoffset
-            #             self.velocity_y = 0
-            #             platform.color = (0,0,255)
             elif collision_point and self.velocity_y > 0:
                 collision_y_global = self.rect.top + collision_point[1]
                 distance_from_platform_top = platform.boundary_rect.bottom - collision_y_global
@@ -141,10 +134,10 @@ class Player(Sprite):
 
 
         #Ensure the player doesn't fall through the ground
-        if self.boundary_rect.bottom >= GROUNDY:
-            downoffset = self.boundary_rect.bottom - self.rect.top
-            self.boundary_rect.bottom = GROUNDY - 1
-            self.rect.top = self.boundary_rect.bottom - downoffset
+        if self.hitbox.bottom >= GROUNDY:
+            downoffset = self.hitbox.bottom - self.rect.top
+            self.hitbox.bottom = GROUNDY - 1
+            self.rect.top = self.hitbox.bottom - downoffset
             self.on_ground = True
             self.velocity_y = 0
 
@@ -159,6 +152,7 @@ class Player(Sprite):
         #     self.velocity_y -= self.gravity
 
         #draws collision bordor for player
+        pygame.draw.rect(screen, (0,255,0), self.hitbox)
         #create mask from currently animation surface frame
         self.mask = pygame.mask.from_surface(self.surf[self.frame_num])
     

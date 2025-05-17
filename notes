@@ -67,3 +67,5 @@ FIX THE SMALL PLATFORMS >:(
 Something wrong with small platforms check code that hits roof.
 
 Look at the scroll stuff: Might use collision point instead of boundary rect to check
+
+Change hit roof of plat to hitbox
