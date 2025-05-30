@@ -30,11 +30,11 @@ hold down z to grab blaster and have to hold z to keep blaster out. When z is le
 use cipher from coding challenges as writing on walls of game maybe hmmm
 
 
-Fix enemy pos
-make enemies move.
-
-finish enemy spotplayer mode!!!!!!!!!!!!!!
-
+## TO DO LIST
+## HEADER
+**BOLD**
+* LIST
+*I*
 
 make enemies shoot player :0
 enemy sprites have blasters

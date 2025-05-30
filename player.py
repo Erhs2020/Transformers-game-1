@@ -110,8 +110,9 @@ class Player(Sprite):
             #player falling
             if collision_point and self.velocity_y < 0:
                 collision_y_global = self.hitbox.top + collision_point[1]
+                distance = platform.boundary_rect.top - self.hitbox.top
                 distance_from_platform_top = collision_y_global - platform.boundary_rect.top
-                if 0 <= distance_from_platform_top <= 10:
+                if distance > self.hitbox.height * 0.9:
                     downoffset = self.hitbox.bottom - self.rect.top
                     collision_y = self.hitbox.top + collision_point[1]
                     self.hitbox.bottom = collision_y - 1
@@ -120,16 +121,17 @@ class Player(Sprite):
                     self.velocity_y = 0
                     platform.color = (0,255,0)
 
+            #top
             elif collision_point and self.velocity_y > 0:
-                collision_y_global = self.rect.top + collision_point[1]
+                collision_y_global = self.hitbox.top + collision_point[1]
                 distance_from_platform_top = platform.boundary_rect.bottom - collision_y_global
-                if 0 <= distance_from_platform_top <= 10:
-                    upoffset = self.boundary_rect.top - self.rect.top
-                    collision_y = self.boundary_rect.top + collision_point[1]
-                    self.boundary_rect.top = collision_y + 1
-                    self.rect.top = self.boundary_rect.top - upoffset
-                    self.velocity_y = -10
-                    platform.color = (0,0,255)
+                #if 0 <= distance_from_platform_top <= 10:
+                upoffset = self.hitbox.top - self.rect.top
+                collision_y = self.hitbox.top + collision_point[1]
+                self.hitbox.top = collision_y + 25
+                self.rect.top = self.hitbox.top - upoffset
+                self.velocity_y = -1
+                platform.color = (0,0,255)
                 
 
 
