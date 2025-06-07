@@ -50,8 +50,8 @@ class Game:
                 # [0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                 # [0,0,0,1,1,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0],
                 [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                [0,0,0,3,0,0,0,0,0,0,0,3,1,1,3,0,0,3,1,1,3,0],
-                [0,0,1,1,1,1,1,1,1,1,1,1,2,2,1,1,0,1,2,2,1,0]
+                [0,0,0,0,0,0,0,0,0,0,0,3,1,1,3,0,0,3,1,1,3,0],
+                [0,0,0,0,0,0,0,3,1,1,1,1,2,2,1,1,0,1,2,2,1,0]
             ],
             platforms_list = PLATFORMS_LIST,
             player = self.player,
@@ -70,9 +70,10 @@ class Game:
 
         speed = self.scroll_speed
         floor_speed_mult = 2
-        
-        if self.player.states["running"] and self.player.mode == "car":
+        pressed_keys = pygame.key.get_pressed()
+        if self.player.states["running"] and pressed_keys[pygame.K_LSHIFT]:
             speed = self.running_scroll_speed
+        
             
        
         "If scroll direction is right"

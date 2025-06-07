@@ -57,15 +57,5 @@ Look for unneeded code!!!!!!!
 
 Offset might be hint about vetical glitch thingy. Collisions are working better. fixed ground collision and reduced lag.
 
-
-WHY IS SMALL PLATFORM COLLISON BAD????
-
-LOOK AT LINE 71 in player.py
-
-
-FIX THE SMALL PLATFORMS >:(
-Something wrong with small platforms check code that hits roof.
-
-Look at the scroll stuff: Might use collision point instead of boundary rect to check
-
-Change hit roof of plat to hitbox
+ADD RUNNING ✓
+allow transforming while running 

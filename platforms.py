@@ -58,7 +58,7 @@ class Platforms:
             tile.update_boundary_rect()
             if tile.rect.left < WIDTH and tile.rect.right > 0:
                 tile.draw(screen)
-                pygame.draw.line(screen, tile.color, tile.boundary_rect.topleft, tile.boundary_rect.topright,10)
+                #pygame.draw.line(screen, tile.color, tile.boundary_rect.topleft, tile.boundary_rect.topright,10)
         for enemy in self.enemies:
             enemy.draw(screen)
     

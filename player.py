@@ -26,7 +26,7 @@ class Player(Sprite):
         #jumping variables
         self.velocity_y = 0
         self.gravity = 2
-        self.jump_height = 35
+        self.jump_height = 20
         self.on_ground = True
         self.start_y = self.rect.bottom
 
@@ -104,34 +104,24 @@ class Player(Sprite):
             #check for mask collision
             offset = (platform.rect.x - self.hitbox.x, platform.rect.y - self.hitbox.y)
             collision_point = self.hitbox_mask.overlap(platform.mask, offset)
-            self.boundary_rect = self.get_mask_rect(self.mask,self.rect.topleft)
 
-            platform.color = (255,0,0)
-            #player falling
-            if collision_point and self.velocity_y < 0:
-                collision_y_global = self.hitbox.top + collision_point[1]
-                distance = platform.boundary_rect.top - self.hitbox.top
-                distance_from_platform_top = collision_y_global - platform.boundary_rect.top
-                if distance > self.hitbox.height * 0.9:
-                    downoffset = self.hitbox.bottom - self.rect.top
-                    collision_y = self.hitbox.top + collision_point[1]
-                    self.hitbox.bottom = collision_y - 1
-                    self.rect.top = self.hitbox.bottom - downoffset
-                    self.on_ground = True
+            if collision_point:
+                #player falling
+                if self.velocity_y < 0 and self.hitbox.bottom <= platform.boundary_rect.top + 50:
+                    offset_from_top = self.hitbox.bottom - self.rect.top
+                    self.hitbox.bottom = platform.boundary_rect.top
+                    self.rect.top = self.hitbox.bottom - offset_from_top
                     self.velocity_y = 0
-                    platform.color = (0,255,0)
+                    self.on_ground = True
+                    #platform.color = (0, 255, 0)
 
-            #top
-            elif collision_point and self.velocity_y > 0:
-                collision_y_global = self.hitbox.top + collision_point[1]
-                distance_from_platform_top = platform.boundary_rect.bottom - collision_y_global
-                #if 0 <= distance_from_platform_top <= 10:
-                upoffset = self.hitbox.top - self.rect.top
-                collision_y = self.hitbox.top + collision_point[1]
-                self.hitbox.top = collision_y + 25
-                self.rect.top = self.hitbox.top - upoffset
-                self.velocity_y = -1
-                platform.color = (0,0,255)
+            # Check hitting head on bottom of platform
+                elif self.velocity_y > 0 and self.hitbox.top >= platform.boundary_rect.bottom - 10:
+                    offset_from_top = self.hitbox.top - self.rect.top
+                    self.hitbox.top = platform.boundary_rect.bottom
+                    self.rect.top = self.hitbox.top - offset_from_top
+                    self.velocity_y = -1
+                    #platform.color = (255, 0, 0)
                 
 
 
@@ -154,7 +144,11 @@ class Player(Sprite):
         #     self.velocity_y -= self.gravity
 
         #draws collision bordor for player
-        pygame.draw.rect(screen, (0,255,0), self.hitbox)
+
+        #hitbox draw
+        #pygame.draw.rect(screen, (0,255,0), self.hitbox)
+
+
         #create mask from currently animation surface frame
         self.mask = pygame.mask.from_surface(self.surf[self.frame_num])
     
@@ -253,8 +247,11 @@ class Player(Sprite):
                     elif self.mode == "car":
                         self.animationChange("OP DRIVE") 
                     self.states["running"] = True
+            
+            else:
+                self.resetStates()
             #transform
-            elif pressed_keys[pygame.K_s]:
+            if pressed_keys[pygame.K_s]:
                 if not self.states["transforming"]:
                     self.states["transforming"] = True
                     self.states["running"] = False
@@ -273,16 +270,17 @@ class Player(Sprite):
                 self.rect.move_ip((0,-self.velocity_y))
                 self.on_ground = False
 
-            if pressed_keys[pygame.K_LSHIFT]:
+            if pressed_keys[pygame.K_c]:
                 if not self.states["gettingBlaster"] and self.blaster.showing == False:
                     self.states["gettingBlaster"] = True
                    
                     self.animationChange("OP GET BLASTER")
-            elif not pressed_keys[pygame.K_LSHIFT] and not self.states["blasterPutAway"] and self.blaster.showing:
+            elif not pressed_keys[pygame.K_c] and not self.states["blasterPutAway"] and self.blaster.showing:
                     self.states["blasterPutAway"] = True
                     self.blaster.showing = False
                     self.animationChange("OP GET BLASTER")
                     self.frame_num = 6
+            
             
             #shooting
             if pygame.mouse.get_pressed()[0]:
