@@ -58,4 +58,5 @@ Look for unneeded code!!!!!!!
 Offset might be hint about vetical glitch thingy. Collisions are working better. fixed ground collision and reduced lag.
 
 ADD RUNNING ✓
-allow transforming while running 
+allow transforming while running ✓
+Change background color of anim, see which frame the issue is on.

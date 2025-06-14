@@ -74,8 +74,6 @@ class Sprite(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.surf)
         self.boundary_rect = self.get_mask_rect(self.mask,self.rect.topleft)
         
-        #AllFramesImageSize
-        self.AFIS = (0,0)
     
     def update_boundary_rect(self):
         self.boundary_rect.left = self.rect.left
@@ -158,8 +156,8 @@ class Sprite(pygame.sprite.Sprite):
         
     
     def getAnimFrameRegion(self, row, col):
-        w = self.size[0] / self.anim["numCols"]
-        h = self.size[1] / self.anim["numRows"]
+        w = 384 / self.anim["numCols"]
+        h = 384 / self.anim["numRows"]
         x = w * col
         y = h * row
         return (x, y, w, h)
@@ -186,7 +184,7 @@ class Sprite(pygame.sprite.Sprite):
         allFramesImg = pygame.image.load(
             self.anim["allFramesImage"])
         # .convert_alpha()
-        allFramesImg = pygame.transform.scale(allFramesImg, self.size)
+        # allFramesImg = pygame.transform.scale(allFramesImg, (384, 384))
         self.rightAnim = []
         self.leftAnim = []
         framesAdded = 0
@@ -199,7 +197,7 @@ class Sprite(pygame.sprite.Sprite):
                     
 
                     #scale the croppedSurface to given size
-                    # croppedSurface = pygame.transform.scale(croppedSurface, self.size)
+                    croppedSurface = pygame.transform.scale(croppedSurface, self.size)
 
                     self.rightAnim.append(croppedSurface)
                     flippedSurface = pygame.transform.flip(

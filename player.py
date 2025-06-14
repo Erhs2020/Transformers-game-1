@@ -12,10 +12,10 @@ HITBOX_HEIGHT = 190
 class Player(Sprite):
 
     def __init__(self):
-        Sprite.__init__(self,(0,180),(600,600), "OPRun.png")
+        Sprite.__init__(self,(0,180),(400,400), "OPRun.png")
         self.animationChange("OP IDLE")
         self.mode = "robot"
-        self.size = (900,900)
+        # self.size = (768,768)
         self.type = "player"
 
         #hitbox
@@ -146,7 +146,7 @@ class Player(Sprite):
         #draws collision bordor for player
 
         #hitbox draw
-        #pygame.draw.rect(screen, (0,255,0), self.hitbox)
+        pygame.draw.rect(screen, (0,255,0), self.hitbox)
 
 
         #create mask from currently animation surface frame
@@ -248,8 +248,6 @@ class Player(Sprite):
                         self.animationChange("OP DRIVE") 
                     self.states["running"] = True
             
-            else:
-                self.resetStates()
             #transform
             if pressed_keys[pygame.K_s]:
                 if not self.states["transforming"]:
@@ -261,8 +259,8 @@ class Player(Sprite):
                     else:
                         self.mode = "robot"
                         self.frame_num = 8
-            else:
-                self.resetStates()
+            # else:
+            #     self.resetStates()
                         
             #jumping
             if pressed_keys[pygame.K_w] and self.on_ground and not self.states["transforming"] and self.mode == "robot":
@@ -308,8 +306,9 @@ class Player(Sprite):
                    
             
                 
-        #idle
-            elif not self.states["running"]:
+            #idle
+            pressingkey = True in pressed_keys
+            if not pressingkey:
                 self.resetStates()
 
 
