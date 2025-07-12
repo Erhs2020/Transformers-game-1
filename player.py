@@ -5,14 +5,14 @@ import time
 
 MAX_AMMO = 1
 GROUNDY = 650
-HITBOX_OFFSET_LEFT = 150
-HITBOX_OFFSET_TOP = 145
+HITBOX_OFFSET_LEFT = 195
+HITBOX_OFFSET_TOP = 190
 HITBOX_WIDTH = 50
-HITBOX_HEIGHT = 190
+HITBOX_HEIGHT = 220
 class Player(Sprite):
 
     def __init__(self):
-        Sprite.__init__(self,(0,180),(400,400), "OPRun.png")
+        Sprite.__init__(self,(0,180),(384, 384), "OPRun.png")
         self.animationChange("OP IDLE")
         self.mode = "robot"
         # self.size = (768,768)

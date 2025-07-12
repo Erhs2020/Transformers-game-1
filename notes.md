@@ -60,3 +60,4 @@ Offset might be hint about vetical glitch thingy. Collisions are working better.
 ADD RUNNING ✓
 allow transforming while running ✓
 Change background color of anim, see which frame the issue is on.
+**NOTE TO SELF**: Scaling issue is caused by pygame transform scale method (fixed-ish when using smoothscale)
