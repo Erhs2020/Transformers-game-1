@@ -271,12 +271,13 @@ class Player(Sprite):
             if pressed_keys[pygame.K_c]:
                 if not self.states["gettingBlaster"] and self.blaster.showing == False:
                     self.states["gettingBlaster"] = True
+                    self.blaster.showing = True
                    
-                    self.animationChange("OP GET BLASTER")
+                    # self.animationChange("OP GET BLASTER")
             elif not pressed_keys[pygame.K_c] and not self.states["blasterPutAway"] and self.blaster.showing:
                     self.states["blasterPutAway"] = True
                     self.blaster.showing = False
-                    self.animationChange("OP GET BLASTER")
+                    # self.animationChange("OP GET BLASTER")
                     self.frame_num = 6
             
             
@@ -309,6 +310,8 @@ class Player(Sprite):
             #idle
             pressingkey = True in pressed_keys
             if not pressingkey:
+                self.resetStates()
+            if pressed_keys[pygame.K_LSHIFT] and (not pressed_keys[pygame.K_a] and not pressed_keys[pygame.K_d]):
                 self.resetStates()
 
 

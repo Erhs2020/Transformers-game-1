@@ -13,6 +13,8 @@ class Blaster(Sprite):
         self.bullets = []
         self.showing = False
 
+        #og size (26,13)
+
 
     #shoots bullet at target
     def shoot(self, pos):
@@ -63,7 +65,7 @@ class Blaster(Sprite):
                 self.angle = -90
         
     
-        px, py = owner.boundary_rect.center
+        px, py = owner.hitbox.center
         if self.facing == "right":
             self.rect.topleft = (px,py - 7)
         else:

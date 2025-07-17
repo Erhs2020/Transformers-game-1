@@ -55,9 +55,12 @@ Make MORE level stucture tile sprites (including middle tile piece)
 FIX AllframesImg!!!!
 Look for unneeded code!!!!!!!
 
-Offset might be hint about vetical glitch thingy. Collisions are working better. fixed ground collision and reduced lag.
+Offset might be hint about vetical glitch thingy. Collisions are working better. fixed ground collision and reduced lag.✓
 
 ADD RUNNING ✓
 allow transforming while running ✓
-Change background color of anim, see which frame the issue is on.
-**NOTE TO SELF**: Scaling issue is caused by pygame transform scale method (fixed-ish when using smoothscale)
+Change background color of anim, see which frame the issue is on.✓
+**NOTE TO SELF**: Scaling issue is caused by pygame transform scale method (fixed-ish when using smoothscale but fuzzy)✓
+
+add new blaster in game :)
+

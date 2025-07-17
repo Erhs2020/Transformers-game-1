@@ -71,7 +71,7 @@ class Game:
         speed = self.scroll_speed
         floor_speed_mult = 2
         pressed_keys = pygame.key.get_pressed()
-        if self.player.states["running"] and pressed_keys[pygame.K_LSHIFT]:
+        if self.player.states["running"] and pressed_keys[pygame.K_LSHIFT] and (pressed_keys[pygame.K_a] or pressed_keys[pygame.K_d]):
             speed = self.running_scroll_speed
         
             

@@ -39,7 +39,7 @@ class Platforms:
                     tile.change_surf_to(self.platforms_list[num - 1])
                     self.tiles.append(tile)
 
-        print(len(self.tiles))
+        # print(len(self.tiles))
 
     def set_player(self, player):
         self.player = player
