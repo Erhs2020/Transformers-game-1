@@ -64,3 +64,5 @@ Change background color of anim, see which frame the issue is on.✓
 
 add new blaster in game :)
 
+after resetstates is run the animations don't change (look at the order of which things are happening or something else)
+

@@ -44,6 +44,7 @@ class Player(Sprite):
         self.states = {
             "running": False,
             "idle": True,
+            "jumping": False,
             "transforming": False,
             "driving": False,
             "shooting": False,
@@ -178,7 +179,15 @@ class Player(Sprite):
         if self.states["blasterPutAway"] == True:
             if self.frame_num < 6: 
                 self.states["blasterPutAway"] = False
-               
+        
+
+        
+        if self.states["jumping"] == True:
+            if self.frame_num > 0: #change number later :)
+                self.states["jumping"] = False
+                self.states["running"] = False
+                self.resetStates()
+                print("running")
             
             
 
@@ -228,6 +237,7 @@ class Player(Sprite):
                     if self.mode == "robot":
                         if self.blaster.showing == False:
                             self.animationChange("OP RUN") 
+                            print("d")
                         else:
                             self.animationChange("OP BLASTER RUN")
                     elif self.mode == "car":
@@ -267,6 +277,8 @@ class Player(Sprite):
                 self.velocity_y = self.jump_height
                 self.rect.move_ip((0,-self.velocity_y))
                 self.on_ground = False
+                self.states["jumping"] = True
+                self.animationChange("OP JUMP")
 
             if pressed_keys[pygame.K_c]:
                 if not self.states["gettingBlaster"] and self.blaster.showing == False:
@@ -313,6 +325,7 @@ class Player(Sprite):
                 self.resetStates()
             if pressed_keys[pygame.K_LSHIFT] and (not pressed_keys[pygame.K_a] and not pressed_keys[pygame.K_d]):
                 self.resetStates()
+            # if pressed_keys[pygame.K_w] and (not pressed_keys[pygame.K_a] and not pressed_keys[pygame.K_d])
 
 
              
