@@ -183,7 +183,8 @@ class Player(Sprite):
 
         
         if self.states["jumping"] == True:
-            if self.frame_num > 0: #change number later :)
+            print(self.frame_num)
+            if self.frame_num >= 2: #change number later :)
                 self.states["jumping"] = False
                 self.states["running"] = False
                 self.resetStates()
@@ -321,7 +322,7 @@ class Player(Sprite):
                 
             #idle
             pressingkey = True in pressed_keys
-            if not pressingkey:
+            if not pressingkey and not self.states["jumping"]:
                 self.resetStates()
             if pressed_keys[pygame.K_LSHIFT] and (not pressed_keys[pygame.K_a] and not pressed_keys[pygame.K_d]):
                 self.resetStates()
