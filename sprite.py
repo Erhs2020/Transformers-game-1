@@ -15,10 +15,10 @@ animDictionary = {
         "allFramesImage": "Images/Optimus Prime idle.png"
     },
     "OP JUMP": {
-        "numFrames": 3,
+        "numFrames": 4,
         "numRows": 3,
         "numCols": 3,
-        "allFramesImage": "Images/Optimus Prime jump2.png"
+        "allFramesImage": "Images/Optimus Prime jump3.png"
     },
     "OP TRANSFORM": {
         "numFrames": 9,

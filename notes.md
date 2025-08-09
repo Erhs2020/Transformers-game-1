@@ -66,4 +66,4 @@ add new blaster in game :)
 
 after resetstates is run the animations don't change (look at the order of which things are happening or something else)
 
-for jump anim hold second frame until land.
+for jump anim hold first frame before jump velocity

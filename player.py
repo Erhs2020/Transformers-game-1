@@ -95,7 +95,7 @@ class Player(Sprite):
         self.rect.move_ip(0,-self.velocity_y)
         if self.on_ground == False:
             self.velocity_y -= self.gravity
-        
+            
         #reset the ground state
         self.on_ground = False 
         self.hitbox.center = (self.rect.left + HITBOX_OFFSET_LEFT, self.rect.top + HITBOX_OFFSET_TOP)
@@ -114,6 +114,7 @@ class Player(Sprite):
                     self.rect.top = self.hitbox.bottom - offset_from_top
                     self.velocity_y = 0
                     self.on_ground = True
+                    # self.frame_num = 3
                     #platform.color = (0, 255, 0)
 
             # Check hitting head on bottom of platform
@@ -133,6 +134,7 @@ class Player(Sprite):
             self.rect.top = self.hitbox.bottom - downoffset
             self.on_ground = True
             self.velocity_y = 0
+            # self.frame_num = 3
 
         # collided = self.collidedWithPlatforms(platforms_list.getTiles())
         # #handle jump
@@ -184,10 +186,10 @@ class Player(Sprite):
         
         if self.states["jumping"] == True:
             print(self.frame_num)
-            if self.frame_num >= 2: #change number later :)
+            if self.frame_num >= 4: #change number later :)
                 self.states["jumping"] = False
                 self.states["running"] = False
-                self.resetStates()
+                # self.resetStates()
                 print("running")
             
             
@@ -220,8 +222,17 @@ class Player(Sprite):
         if self.ticks % 10 == 0:
             if (self.mode == "robot" and self.states["transforming"]) or self.states["blasterPutAway"]:
                 self.updateAnimNumberBackwards()
-            else:
+            elif not self.states["jumping"]:
                 self.updateAnimNumber()
+            elif self.states["jumping"]:
+                if self.frame_num == 0 and self.on_ground == False:
+                    self.updateAnimNumber()
+                elif self.frame_num == 1 and self.on_ground == False and self.velocity_y < 0:
+                    self.updateAnimNumber()
+                elif self.frame_num == 2 and self.on_ground == True:
+                    self.updateAnimNumber()
+                elif self.frame_num == 3 and self.on_ground == True:
+                    self.resetStates()
         self.ticks +=1
 
         
@@ -275,6 +286,7 @@ class Player(Sprite):
                         
             #jumping
             if pressed_keys[pygame.K_w] and self.on_ground and not self.states["transforming"] and self.mode == "robot":
+
                 self.velocity_y = self.jump_height
                 self.rect.move_ip((0,-self.velocity_y))
                 self.on_ground = False
