@@ -6,7 +6,7 @@ import time
 class Blaster(Sprite):
     
     def __init__(self):
-        Sprite.__init__(self,(125,305), (26,13), "OPBlaster.png")
+        Sprite.__init__(self,(125,305), (384,384), "Optimus Prime Blaster.png")
         self.angle = 0
         self.facing = "right"
         self.starting_pos = self.rect.bottomleft
@@ -67,7 +67,7 @@ class Blaster(Sprite):
     
         px, py = owner.hitbox.center
         if self.facing == "right":
-            self.rect.topleft = (px,py - 7)
+            self.rect.center = (px,py - 12)
         else:
             self.rect.topright = (px,py - 7)
         if(owner.type == "player" and owner.states["running"]) or (owner.type == "enemy" and owner.state == "patrol"):

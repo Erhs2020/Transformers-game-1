@@ -47,7 +47,7 @@ class Enemy(Sprite):
       self.ticks = 0
     
 
-      print(self.rect.topleft)
+      
     
 
     def draw(self, screen): #use speed to update farthest pos

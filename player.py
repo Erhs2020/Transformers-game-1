@@ -50,7 +50,7 @@ class Player(Sprite):
             "shooting": False,
             "gettingBlaster": False,
             "blasterPutAway": False,
-
+            "sprinting": False
 
 
         }
@@ -185,12 +185,11 @@ class Player(Sprite):
 
         
         if self.states["jumping"] == True:
-            print(self.frame_num)
             if self.frame_num >= 4: #change number later :)
                 self.states["jumping"] = False
                 self.states["running"] = False
                 # self.resetStates()
-                print("running")
+
             
             
 
@@ -219,37 +218,48 @@ class Player(Sprite):
         # modified_t = int(t /100)
 
         #if modified time is divisible by 10
-        if self.ticks % 10 == 0:
+
+        if self.states["jumping"] and self.ticks % 2 == 0:
+            if self.frame_num == 0 and self.on_ground == False:
+                self.updateAnimNumber()
+                self.velocity_y = self.jump_height
+                self.rect.move_ip((0,-self.velocity_y))
+            elif self.frame_num == 1 and self.on_ground == False and self.velocity_y < 0:
+                self.updateAnimNumber()
+            elif self.frame_num == 2 and self.on_ground == True:
+                self.updateAnimNumber()
+            elif self.frame_num == 3 and self.on_ground == True:
+                self.resetStates()
+        
+        elif self.states["sprinting"] and self.ticks % 3 == 0:
             if (self.mode == "robot" and self.states["transforming"]) or self.states["blasterPutAway"]:
                 self.updateAnimNumberBackwards()
             elif not self.states["jumping"]:
                 self.updateAnimNumber()
-            elif self.states["jumping"]:
-                if self.frame_num == 0 and self.on_ground == False:
-                    self.updateAnimNumber()
-                elif self.frame_num == 1 and self.on_ground == False and self.velocity_y < 0:
-                    self.updateAnimNumber()
-                elif self.frame_num == 2 and self.on_ground == True:
-                    self.updateAnimNumber()
-                elif self.frame_num == 3 and self.on_ground == True:
-                    self.resetStates()
+
+        elif not self.states["jumping"] and self.ticks % 8 == 0:
+            if (self.mode == "robot" and self.states["transforming"]) or self.states["blasterPutAway"]:
+                self.updateAnimNumberBackwards()
+            elif not self.states["jumping"]:
+                self.updateAnimNumber()
         self.ticks +=1
 
         
     #handles key presses based on key pressed update player animation and trigger any side effects
     def handlekeypress(self):
         pressed_keys = pygame.key.get_pressed()
+        self.states["sprinting"] = pressed_keys[pygame.K_LSHIFT]
 
         #running
         if not self.states["transforming"] and not self.states["gettingBlaster"] and not self.states["blasterPutAway"]:
             #run right
             if pressed_keys[pygame.K_d]:
                 self.facing = "right"
-                if not self.states["running"]:
+                if not self.states["running"] and not self.states["jumping"]:
                     if self.mode == "robot":
                         if self.blaster.showing == False:
                             self.animationChange("OP RUN") 
-                            print("d")
+                            
                         else:
                             self.animationChange("OP BLASTER RUN")
                     elif self.mode == "car":
@@ -260,7 +270,7 @@ class Player(Sprite):
             #run left
             elif pressed_keys[pygame.K_a]:
                 self.facing = "left"
-                if not self.states["running"]:
+                if not self.states["running"] and not self.states["jumping"]:
                     if self.mode == "robot":
                         if self.blaster.showing == False:
                             self.animationChange("OP RUN") 
@@ -287,8 +297,7 @@ class Player(Sprite):
             #jumping
             if pressed_keys[pygame.K_w] and self.on_ground and not self.states["transforming"] and self.mode == "robot":
 
-                self.velocity_y = self.jump_height
-                self.rect.move_ip((0,-self.velocity_y))
+               
                 self.on_ground = False
                 self.states["jumping"] = True
                 self.animationChange("OP JUMP")
