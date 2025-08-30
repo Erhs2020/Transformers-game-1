@@ -237,7 +237,7 @@ class Player(Sprite):
             elif not self.states["jumping"]:
                 self.updateAnimNumber()
 
-        elif not self.states["jumping"] and self.ticks % 8 == 0:
+        elif not self.states["jumping"] and self.ticks % 5 == 0:
             if (self.mode == "robot" and self.states["transforming"]) or self.states["blasterPutAway"]:
                 self.updateAnimNumberBackwards()
             elif not self.states["jumping"]:

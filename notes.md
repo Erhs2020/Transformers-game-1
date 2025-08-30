@@ -67,3 +67,6 @@ add new blaster in game :)
 after resetstates is run the animations don't change (look at the order of which things are happening or something else) ✓
 
 for jump anim hold first frame before jump velocity✓
+
+Press c with out running bad :(
+center blaster arm rotation.

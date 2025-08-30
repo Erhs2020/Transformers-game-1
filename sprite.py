@@ -44,21 +44,21 @@ animDictionary = {
         "numFrames": 7,
         "numRows": 3,
         "numCols": 3,
-        "allFramesImage": "Images/OPBlasterGet.png"
+        "allFramesImage": "Images/Optimus Prime walk No arm.png"
 
     },
     "OP BLASTER RUN": {
-        "numFrames": 4,
+        "numFrames": 8,
         "numRows": 3,
         "numCols": 3,
-        "allFramesImage": "Images/OPRunWithBlaster.png"
+        "allFramesImage": "Images/Optimus Prime walk No arm.png"
 
     },
     "OP BLASTER IDLE": {
         "numFrames": 1,
         "numRows": 3,
         "numCols": 3,
-        "allFramesImage": "Images/OPBlasterIdle.png"
+        "allFramesImage": "Images/Optimus Prime idle.png"
     },
     
     

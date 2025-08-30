@@ -89,7 +89,7 @@ while running:
 
 
     #drawing on the screen
-    SCREEN.fill((0,0,0))
+    SCREEN.fill((125,175,255))
     game.PLAY_DA_GAME()
 
     pygame.display.update()
