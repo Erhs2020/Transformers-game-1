@@ -70,3 +70,5 @@ for jump anim hold first frame before jump velocity✓
 
 Press c with out running bad :(
 center blaster arm rotation.
+
+fix blaster to face mouse

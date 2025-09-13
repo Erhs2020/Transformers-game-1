@@ -110,6 +110,12 @@ class Sprite(pygame.sprite.Sprite):
         rotated_surface_rect = rotated_surf.get_rect(center = self.rect.center)
         return (rotated_surf, rotated_surface_rect)
     
+    def rotateAroundPoint(self, angle, pivot, offset):
+        rotated_image = pygame.transform.rotozoom(self.surf, -angle, 1) #Rotate image
+        rotated_offset = offset.rotate(angle) #Rotate the offset vector
+        rect = rotated_image.get_rect(center = pivot + rotated_offset)
+        return rotated_image, rect 
+    
     def calculateAngle(self, pos1, pos2):
         dx = pos2[0] - pos1[0]
         dy = pos1[1] - pos2[1]

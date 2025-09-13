@@ -12,6 +12,8 @@ class Blaster(Sprite):
         self.starting_pos = self.rect.bottomleft
         self.bullets = []
         self.showing = False
+        self.pivot = [self.rect.left, self.rect.top]
+        self.pivot_offset = pygame.math.Vector2(10, 0)
 
         #og size (26,13)
 
@@ -43,13 +45,29 @@ class Blaster(Sprite):
 
     #rotate
     def rotate_towards(self, owner, pos):
-        r_surf, r_rect = self.rotateSprite(self.angle)
-        self.angle = self.calculateAngle(self.rect.topleft, pos)
+
+        px, py = owner.hitbox.topleft
+        if self.facing == "right":
+            self.pivot = [px - 15,py + 35]
+        else:
+            self.pivot = [px,py - 30]
+        if(owner.type == "player" and owner.states["running"]) or (owner.type == "enemy" and owner.state == "patrol"):
+            if owner.frame_num % 2 == 0:
+                self.pivot[0] += 10
+                self.pivot[1] -= 1
+            else:
+                self.pivot[0] += 10
+                self.pivot[1] -= 4
+
+
+        # r_surf, r_rect = self.rotateSprite(self.angle)
+        self.angle = self.calculateAngle(self.rect.topleft, pos) + 15
+        r_surf, r_rect = self.rotateAroundPoint(-self.angle, self.pivot, self.pivot_offset)
         if owner.facing == "right": 
             if owner.facing != self.facing:
                 self.flipBlaster()
                 self.facing = "right"
-                self.rect.topleft = (125,305)
+                # self.rect.topleft = (125,305)
             if self.angle > 90:
                 self.angle = 90
             if self.angle < -90:
@@ -58,24 +76,13 @@ class Blaster(Sprite):
             if owner.facing != self.facing:
                 self.flipBlaster()
                 self.facing = "left"
-                self.rect.topleft = (100,305)
+                # self.rect.topleft = (100,305)
             if 0 <= self.angle <= 89:
                 self.angle = 90
             elif -89 <= self.angle <= -0:
                 self.angle = -90
         
     
-        px, py = owner.hitbox.topleft
-        if self.facing == "right":
-            self.rect.center = (px,py + 30)
-        else:
-            self.rect.topright = (px,py - 30)
-        if(owner.type == "player" and owner.states["running"]) or (owner.type == "enemy" and owner.state == "patrol"):
-            if owner.frame_num % 2 == 0:
-                self.rect.centery += 1
-            else:
-                self.rect.centery -= 4
-
 
         return r_surf, r_rect
 
@@ -85,6 +92,7 @@ class Blaster(Sprite):
         if self.showing == True:
             r_surf, r_rect = self.rotate_towards(owner, target_pos)
             SCREEN.blit(r_surf, r_rect)
+            pygame.draw.circle(SCREEN, (255, 230, 0), self.pivot, 10)
             # mouse_pos = pygame.mouse.get_pos()
             # self.angle = self.calculateAngle(self.rect.topleft, mouse_pos)
             # if player.facing == "right": 
