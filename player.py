@@ -57,6 +57,7 @@ class Player(Sprite):
     
     #resets player state to idle 
     def resetStates(self):
+        print(self.states["gettingBlaster"])
         if self.states["transforming"] == False and self.states["gettingBlaster"] == False and self.states["blasterPutAway"] == False:
             for state in self.states:
                 self.states[state] = False
@@ -307,11 +308,11 @@ class Player(Sprite):
                     self.states["gettingBlaster"] = True
                     self.blaster.showing = True
                    
-                    # self.animationChange("OP GET BLASTER")
+                    self.animationChange("OP GET BLASTER")
             elif not pressed_keys[pygame.K_c] and not self.states["blasterPutAway"] and self.blaster.showing:
                     self.states["blasterPutAway"] = True
                     self.blaster.showing = False
-                    # self.animationChange("OP GET BLASTER")
+                    self.animationChange("OP GET BLASTER")
                     self.frame_num = 6
             
             

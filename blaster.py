@@ -14,6 +14,7 @@ class Blaster(Sprite):
         self.showing = False
         self.pivot = [self.rect.left, self.rect.top]
         self.pivot_offset = pygame.math.Vector2(10, 0)
+        self.shoot_offset = pygame.math.Vector2(50, 0)
 
         #og size (26,13)
 
@@ -21,8 +22,10 @@ class Blaster(Sprite):
     #shoots bullet at target
     def shoot(self, pos):
         if self.showing:
-            # make bullet at blaster 
-            bullet = Bullet(self.rect.center, 10, (252,109,0), (10,10))
+            # make bullet at blaster
+            self.shoot_offset.rotate(self.angle)
+            self.shoot_pos = self.pivot + self.shoot_offset
+            bullet = Bullet(self.shoot_pos, 10, (252,109,0), (10,10))
             self.bullets.append(bullet)
             # make bullet go to mouse cursor/ pos
             bullet.shoot(pos)
@@ -47,17 +50,23 @@ class Blaster(Sprite):
     def rotate_towards(self, owner, pos):
 
         px, py = owner.hitbox.topleft
-        if self.facing == "right":
-            self.pivot = [px - 15,py + 35]
-        else:
-            self.pivot = [px,py - 30]
-        if(owner.type == "player" and owner.states["running"]) or (owner.type == "enemy" and owner.state == "patrol"):
-            if owner.frame_num % 2 == 0:
-                self.pivot[0] += 10
-                self.pivot[1] -= 1
+        if not owner.states["running"]:
+            if self.facing == "right":
+                self.pivot = [px - 15,py + 35]
             else:
-                self.pivot[0] += 10
-                self.pivot[1] -= 4
+                self.pivot = [px + 55,py + 35]
+        elif owner.states["running"]:
+            if self.facing == "right":
+                self.pivot = [px - 8,py + 35]
+            else:
+                self.pivot = [px + 30,py + 35]
+            if(owner.type == "player" and owner.states["running"]) or (owner.type == "enemy" and owner.state == "patrol"):
+                if owner.frame_num % 2 == 0:
+                    self.pivot[0] += 10
+                    self.pivot[1] -= 1
+                else:
+                    self.pivot[0] += 10
+                    self.pivot[1] -= 4
 
 
         # r_surf, r_rect = self.rotateSprite(self.angle)
@@ -91,8 +100,10 @@ class Blaster(Sprite):
         for b in self.bullets: b.draw(SCREEN)
         if self.showing == True:
             r_surf, r_rect = self.rotate_towards(owner, target_pos)
+            
             SCREEN.blit(r_surf, r_rect)
             pygame.draw.circle(SCREEN, (255, 230, 0), self.pivot, 10)
+            pygame.draw.circle(SCREEN, (255, 100, 0), self.shoot_offset, 10)
             # mouse_pos = pygame.mouse.get_pos()
             # self.angle = self.calculateAngle(self.rect.topleft, mouse_pos)
             # if player.facing == "right": 
