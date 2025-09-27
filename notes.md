@@ -73,4 +73,4 @@ center blaster arm rotation.
 
 fix blaster to face mouse
 
-Vector2 shoot_offet in blaster.py needs to be fixed.
+Add enemies, fix car mode hitbox

@@ -13,6 +13,7 @@ class Game:
         self.scroll_speed = 2
         self.running_scroll_speed = 4
         self.vehicle_scroll_speed = 6
+        self.vehicle_fast_scroll_speed = 10
         self.direction = "right"
 
 
@@ -67,13 +68,17 @@ class Game:
     def scroll(self,scrollDirection):
 
     
-
         speed = self.scroll_speed
-        floor_speed_mult = 2
         pressed_keys = pygame.key.get_pressed()
-        if self.player.states["running"] and pressed_keys[pygame.K_LSHIFT] and (pressed_keys[pygame.K_a] or pressed_keys[pygame.K_d]):
-            speed = self.running_scroll_speed
-        
+        if self.player.mode == "robot":
+            speed = self.scroll_speed
+            if pressed_keys[pygame.K_LSHIFT] and (pressed_keys[pygame.K_a] or pressed_keys[pygame.K_d]):
+                speed = self.running_scroll_speed
+        elif self.player.mode == "car":
+            speed = self.vehicle_scroll_speed
+            if pressed_keys[pygame.K_LSHIFT] and (pressed_keys[pygame.K_a] or pressed_keys[pygame.K_d]):
+                speed = self.vehicle_fast_scroll_speed
+        floor_speed_mult = 2
             
        
         "If scroll direction is right"

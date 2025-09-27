@@ -1,6 +1,7 @@
 import pygame
 from sprite import Sprite
 from bullet import Bullet
+import math
 import time
 
 class Blaster(Sprite):
@@ -14,7 +15,8 @@ class Blaster(Sprite):
         self.showing = False
         self.pivot = [self.rect.left, self.rect.top]
         self.pivot_offset = pygame.math.Vector2(10, 0)
-        self.shoot_offset = pygame.math.Vector2(50, 0)
+        self.shoot_pos = (0,0)
+        # self.shoot_offset = pygame.math.Vector2(50, 0)
 
         #og size (26,13)
 
@@ -23,13 +25,18 @@ class Blaster(Sprite):
     def shoot(self, pos):
         if self.showing:
             # make bullet at blaster
-            self.shoot_offset.rotate(self.angle)
-            self.shoot_pos = self.pivot + self.shoot_offset
-            bullet = Bullet(self.shoot_pos, 10, (252,109,0), (10,10))
+            rad = math.radians(self.angle)
+            offset_x, offset_y = (200,0)
+            rx = offset_x * math.cos(rad) - offset_y * math.sin(rad)
+            ry = offset_x * math.sin(rad) - offset_y * math.cos(rad)
+            tip_x = self.pivot[0] + rx
+            tip_y = self.pivot[1] - ry
+            self.shoot_pos = (tip_x, tip_y)
+            bullet = Bullet(self.shoot_pos, 40, (252,109,0), (20,20))
             self.bullets.append(bullet)
             # make bullet go to mouse cursor/ pos
-            bullet.shoot(pos)
-            print(pos)
+            bullet.shoot(self.angle)
+            
     
     #flip blaster on screen vertical
     def flipBlaster(self):
@@ -70,27 +77,27 @@ class Blaster(Sprite):
 
 
         # r_surf, r_rect = self.rotateSprite(self.angle)
-        self.angle = self.calculateAngle(self.rect.topleft, pos) + 15
+        self.angle = self.calculateAngle(self.pivot, pos)
         r_surf, r_rect = self.rotateAroundPoint(-self.angle, self.pivot, self.pivot_offset)
         if owner.facing == "right": 
+            # print(owner.facing, self.facing)
             if owner.facing != self.facing:
                 self.flipBlaster()
                 self.facing = "right"
                 # self.rect.topleft = (125,305)
-            if self.angle > 90:
-                self.angle = 90
-            if self.angle < -90:
-                self.angle = -90
+            # if self.angle > 90:
+            #     self.angle = 90
+            # if self.angle < -90:
+            #     self.angle = -90
         else:
             if owner.facing != self.facing:
                 self.flipBlaster()
                 self.facing = "left"
                 # self.rect.topleft = (100,305)
-            if 0 <= self.angle <= 89:
-                self.angle = 90
-            elif -89 <= self.angle <= -0:
-                self.angle = -90
-        
+            # if 0 <= self.angle <= 89:
+            #     self.angle = 90
+            # elif -89 <= self.angle <= -0:
+            #     self.angle = -90
     
 
         return r_surf, r_rect
@@ -103,7 +110,8 @@ class Blaster(Sprite):
             
             SCREEN.blit(r_surf, r_rect)
             pygame.draw.circle(SCREEN, (255, 230, 0), self.pivot, 10)
-            pygame.draw.circle(SCREEN, (255, 100, 0), self.shoot_offset, 10)
+            pygame.draw.circle(SCREEN, (255, 100, 0), self.shoot_pos, 10)
+            pygame.draw.line(SCREEN, (255, 10, 112), self.pivot, self.shoot_pos, 5)
             # mouse_pos = pygame.mouse.get_pos()
             # self.angle = self.calculateAngle(self.rect.topleft, mouse_pos)
             # if player.facing == "right": 

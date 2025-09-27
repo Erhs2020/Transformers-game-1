@@ -21,23 +21,23 @@ animDictionary = {
         "allFramesImage": "Images/Optimus Prime jump3.png"
     },
     "OP TRANSFORM": {
-        "numFrames": 9,
+        "numFrames": 3,
         "numRows": 3,
         "numCols": 3,
-        "allFramesImage": "Images/OPTransform.png"
+        "allFramesImage": "Images/Optimus Prime Transform NEW.png"
     },
      "OP DRIVE": {
         "numFrames": 1,
         "numRows": 3,
         "numCols": 3,
-        "allFramesImage": "Images/OPDrive.png"
+        "allFramesImage": "Images/Optimus Prime Drive Idle.png"
 
     },
     "OP DRIVE IDLE": {
         "numFrames": 1,
         "numRows": 3,
         "numCols": 3,
-        "allFramesImage": "Images/OPDrive.png"
+        "allFramesImage": "Images/Optimus Prime Drive Idle.png"
 
     },
     "OP GET BLASTER": {

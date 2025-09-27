@@ -21,17 +21,19 @@ class Bullet(Sprite):
 
 
     #shoots bullet to target
-    def shoot(self, targetpos):
+    def shoot(self, angle):
+        self.vector.from_polar((1,-angle))
+
         #get x distance
-        x_distance = targetpos[0] - self.rect.centerx
+        # x_distance = targetpos[0] - self.rect.centerx
 
-        #get y distance
-        y_distance = targetpos[1] - self.rect.centery
+        # #get y distance
+        # y_distance = targetpos[1] - self.rect.centery
 
-        #get angle
-        self.angle = math.atan2(y_distance, x_distance)
-        self.angle = math.degrees(self.angle)
-        self.vector.from_polar((1,self.angle))
+        # #get angle
+        # self.angle = math.atan2(y_distance, x_distance)
+        # self.angle = math.degrees(self.angle)
+        # self.vector.from_polar((1,self.angle))
 
 
     #checks for collision

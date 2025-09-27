@@ -3,7 +3,7 @@ from sprite import Sprite
 from blaster import Blaster
 import time
 
-MAX_AMMO = 1
+MAX_AMMO = 3
 GROUNDY = 650
 HITBOX_OFFSET_LEFT = 195
 HITBOX_OFFSET_TOP = 190
@@ -57,7 +57,7 @@ class Player(Sprite):
     
     #resets player state to idle 
     def resetStates(self):
-        print(self.states["gettingBlaster"])
+        # print(self.states["gettingBlaster"])
         if self.states["transforming"] == False and self.states["gettingBlaster"] == False and self.states["blasterPutAway"] == False:
             for state in self.states:
                 self.states[state] = False
@@ -169,8 +169,11 @@ class Player(Sprite):
             # pygame.draw.circle(screen, (0,0,255), tile.rect.center, 5)
 
         if self.states["transforming"] == True:
-            if self.mode == "car" and self.frame_num > 7: self.states["transforming"] = False
-            elif self.mode == "robot" and self.frame_num == 0: self.states["transforming"] = False
+            if self.mode == "car" and self.frame_num > 1: 
+                print("stop transforming")
+                self.states["transforming"] = False
+            elif self.mode == "robot" and self.frame_num == 0: 
+                self.states["transforming"] = False
 
         if self.states["gettingBlaster"] == True:
             if self.frame_num > 1: 
@@ -283,7 +286,7 @@ class Player(Sprite):
             
             #transform
             if pressed_keys[pygame.K_s]:
-                if not self.states["transforming"]:
+                if not self.states["transforming"] and not self.states["jumping"]:
                     self.states["transforming"] = True
                     self.states["running"] = False
                     self.animationChange("OP TRANSFORM")
@@ -291,7 +294,7 @@ class Player(Sprite):
                         self.mode = "car"
                     else:
                         self.mode = "robot"
-                        self.frame_num = 8
+                        self.frame_num = 2
             # else:
             #     self.resetStates()
                         
@@ -303,13 +306,13 @@ class Player(Sprite):
                 self.states["jumping"] = True
                 self.animationChange("OP JUMP")
 
-            if pressed_keys[pygame.K_c]:
+            if pressed_keys[pygame.K_c] and not self.states["driving"]:
                 if not self.states["gettingBlaster"] and self.blaster.showing == False:
                     self.states["gettingBlaster"] = True
                     self.blaster.showing = True
                    
                     self.animationChange("OP GET BLASTER")
-            elif not pressed_keys[pygame.K_c] and not self.states["blasterPutAway"] and self.blaster.showing:
+            elif not pressed_keys[pygame.K_c] and not self.states["blasterPutAway"] and self.blaster.showing and not self.states["driving"]:
                     self.states["blasterPutAway"] = True
                     self.blaster.showing = False
                     self.animationChange("OP GET BLASTER")
