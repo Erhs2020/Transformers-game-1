@@ -68,9 +68,8 @@ after resetstates is run the animations don't change (look at the order of which
 
 for jump anim hold first frame before jump velocity✓
 
-Press c with out running bad :(
-center blaster arm rotation.
+Add enemies
 
-fix blaster to face mouse
+cannot jump in idle while holding blaster
 
-Add enemies, fix car mode hitbox
+press blaster while jumping = ERROR

@@ -30,21 +30,21 @@ animDictionary = {
         "numFrames": 1,
         "numRows": 3,
         "numCols": 3,
-        "allFramesImage": "Images/Optimus Prime Drive Idle.png"
+        "allFramesImage": "Images/Optimus Prime Drive Idle NEW.png"
 
     },
     "OP DRIVE IDLE": {
         "numFrames": 1,
         "numRows": 3,
         "numCols": 3,
-        "allFramesImage": "Images/Optimus Prime Drive Idle.png"
+        "allFramesImage": "Images/Optimus Prime Drive Idle NEW.png"
 
     },
     "OP GET BLASTER": {
         "numFrames": 7,
         "numRows": 3,
         "numCols": 3,
-        "allFramesImage": "Images/Optimus Prime walk No arm.png"
+        "allFramesImage": "Images/Optimus Prime walk.png"
 
     },
     "OP BLASTER RUN": {

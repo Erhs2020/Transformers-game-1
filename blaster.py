@@ -56,7 +56,7 @@ class Blaster(Sprite):
     #rotate
     def rotate_towards(self, owner, pos):
 
-        px, py = owner.hitbox.topleft
+        px, py = owner.hitboxDict[owner.mode]["rect"].topleft
         if not owner.states["running"]:
             if self.facing == "right":
                 self.pivot = [px - 15,py + 35]

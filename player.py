@@ -5,10 +5,15 @@ import time
 
 MAX_AMMO = 3
 GROUNDY = 650
-HITBOX_OFFSET_LEFT = 195
-HITBOX_OFFSET_TOP = 190
-HITBOX_WIDTH = 50
-HITBOX_HEIGHT = 220
+ROBOT_HITBOX_OFFSET_LEFT = 195
+ROBOT_HITBOX_OFFSET_TOP = 190
+ROBOT_HITBOX_WIDTH = 50
+ROBOT_HITBOX_HEIGHT = 220
+
+CAR_HITBOX_OFFSET_LEFT = 190
+CAR_HITBOX_OFFSET_TOP = 280
+CAR_HITBOX_WIDTH = 200
+CAR_HITBOX_HEIGHT = 50
 class Player(Sprite):
 
     def __init__(self):
@@ -18,10 +23,33 @@ class Player(Sprite):
         # self.size = (768,768)
         self.type = "player"
 
+        #robot hitbox
+        self.robot_hitbox = pygame.Rect(self.boundary_rect.bottomleft, (ROBOT_HITBOX_WIDTH, ROBOT_HITBOX_HEIGHT))
+        self.robot_hitbox_mask = pygame.mask.Mask((self.robot_hitbox.width, self.robot_hitbox.height))
+        self.robot_hitbox_mask.fill()
+
+        #car hitbox
+        self.car_hitbox = pygame.Rect(self.boundary_rect.bottomleft, (CAR_HITBOX_WIDTH, CAR_HITBOX_HEIGHT))
+        self.car_hitbox_mask = pygame.mask.Mask((self.car_hitbox.width, self.car_hitbox.height))
+        self.car_hitbox_mask.fill()
+        
         #hitbox
-        self.hitbox = pygame.Rect(self.boundary_rect.bottomleft, (HITBOX_WIDTH, HITBOX_HEIGHT))
-        self.hitbox_mask = pygame.mask.Mask((self.hitbox.width, self.hitbox.height))
-        self.hitbox_mask.fill()
+        self.hitboxDict = {
+            "robot":
+            {
+                 "rect": self.robot_hitbox,
+                 "mask": self.robot_hitbox_mask,
+                 "top": ROBOT_HITBOX_OFFSET_TOP,
+                 "left": ROBOT_HITBOX_OFFSET_LEFT
+            },
+            "car":
+            {
+                 "rect": self.car_hitbox,
+                 "mask": self.car_hitbox_mask,
+                 "top": CAR_HITBOX_OFFSET_TOP,
+                 "left": CAR_HITBOX_OFFSET_LEFT
+            },
+        }
 
         #jumping variables
         self.velocity_y = 0
@@ -76,15 +104,15 @@ class Player(Sprite):
     def collidedWithPlatforms(self, platforms_list):
         for platform in platforms_list:
             # self.boundary_rect = self.get_mask_rect(self.mask,self.rect.topleft)
-            offset = (platform.rect.x - self.hitbox.x, platform.rect.y - self.hitbox.y)
-            collision_point = self.hitbox_mask.overlap(platform.mask, offset)
+            offset = (platform.rect.x - self.hitboxDict[self.mode]["rect"].x, platform.rect.y - self.hitboxDict[self.mode]["rect"].y)
+            collision_point = self.hitboxDict[self.mode]["mask"].overlap(platform.mask, offset)
 
-            if collision_point and self.hitbox.bottom > platform.boundary_rect.top + 10: #and (self.boundary_rect.bottom >= GROUNDY - 10) or self.boundary_rect.bottom >= platform.boundary_rect.top - 10):
+            if collision_point and self.hitboxDict[self.mode]["rect"].bottom > platform.boundary_rect.top + 10: #and (self.boundary_rect.bottom >= GROUNDY - 10) or self.boundary_rect.bottom >= platform.boundary_rect.top - 10):
                 #collided on left side of the platform.
-                if self.hitbox.left <= platform.boundary_rect.left:
+                if self.hitboxDict[self.mode]["rect"].left <= platform.boundary_rect.left:
                     return "left"
                 #collided on right side of the plaform.
-                if self.hitbox.right >= platform.boundary_rect.right:
+                if self.hitboxDict[self.mode]["rect"].right >= platform.boundary_rect.right:
                     return "right"
         return False
     
@@ -99,40 +127,42 @@ class Player(Sprite):
             
         #reset the ground state
         self.on_ground = False 
-        self.hitbox.center = (self.rect.left + HITBOX_OFFSET_LEFT, self.rect.top + HITBOX_OFFSET_TOP)
+        left_offset = self.hitboxDict[self.mode]["left"]
+        top_offset = self.hitboxDict[self.mode]["top"]
+        self.hitboxDict[self.mode]["rect"].center = (self.rect.left + left_offset, self.rect.top + top_offset)
         
         #check for collision with the platforms using masks
         for platform in platforms_list.getTiles():
             #check for mask collision
-            offset = (platform.rect.x - self.hitbox.x, platform.rect.y - self.hitbox.y)
-            collision_point = self.hitbox_mask.overlap(platform.mask, offset)
+            offset = (platform.rect.x - self.hitboxDict[self.mode]["rect"].x, platform.rect.y - self.hitboxDict[self.mode]["rect"].y)
+            collision_point = self.hitboxDict[self.mode]["mask"].overlap(platform.mask, offset)
 
             if collision_point:
                 #player falling
-                if self.velocity_y < 0 and self.hitbox.bottom <= platform.boundary_rect.top + 50:
-                    offset_from_top = self.hitbox.bottom - self.rect.top
-                    self.hitbox.bottom = platform.boundary_rect.top
-                    self.rect.top = self.hitbox.bottom - offset_from_top
+                if self.velocity_y < 0 and self.hitboxDict[self.mode]["rect"].bottom <= platform.boundary_rect.top + 50:
+                    offset_from_top = self.hitboxDict[self.mode]["rect"].bottom - self.rect.top
+                    self.hitboxDict[self.mode]["rect"].bottom = platform.boundary_rect.top
+                    self.rect.top = self.hitboxDict[self.mode]["rect"].bottom - offset_from_top
                     self.velocity_y = 0
                     self.on_ground = True
                     # self.frame_num = 3
                     #platform.color = (0, 255, 0)
 
             # Check hitting head on bottom of platform
-                elif self.velocity_y > 0 and self.hitbox.top >= platform.boundary_rect.bottom - 10:
-                    offset_from_top = self.hitbox.top - self.rect.top
-                    self.hitbox.top = platform.boundary_rect.bottom
-                    self.rect.top = self.hitbox.top - offset_from_top
+                elif self.velocity_y > 0 and self.hitboxDict[self.mode]["rect"].top >= platform.boundary_rect.bottom - 10:
+                    offset_from_top = self.hitboxDict[self.mode]["rect"].top - self.rect.top
+                    self.hitboxDict[self.mode]["rect"].top = platform.boundary_rect.bottom
+                    self.rect.top = self.hitboxDict[self.mode]["rect"].top - offset_from_top
                     self.velocity_y = -1
                     #platform.color = (255, 0, 0)
                 
 
 
         #Ensure the player doesn't fall through the ground
-        if self.hitbox.bottom >= GROUNDY:
-            downoffset = self.hitbox.bottom - self.rect.top
-            self.hitbox.bottom = GROUNDY - 1
-            self.rect.top = self.hitbox.bottom - downoffset
+        if self.hitboxDict[self.mode]["rect"].bottom >= GROUNDY:
+            downoffset = self.hitboxDict[self.mode]["rect"].bottom - self.rect.top
+            self.hitboxDict[self.mode]["rect"].bottom = GROUNDY - 1
+            self.rect.top = self.hitboxDict[self.mode]["rect"].bottom - downoffset
             self.on_ground = True
             self.velocity_y = 0
             # self.frame_num = 3
@@ -150,7 +180,7 @@ class Player(Sprite):
         #draws collision bordor for player
 
         #hitbox draw
-        pygame.draw.rect(screen, (0,255,0), self.hitbox)
+        # pygame.draw.rect(screen, (0,255,0), self.hitboxDict[self.mode]["rect"])
 
 
         #create mask from currently animation surface frame
@@ -176,10 +206,13 @@ class Player(Sprite):
                 self.states["transforming"] = False
 
         if self.states["gettingBlaster"] == True:
-            if self.frame_num > 1: 
+            if self.frame_num >= 6: 
+                print(self.frame_num)
                 self.states["gettingBlaster"] = False
                 self.blaster.showing = True
                 self.resetStates()
+                self.animationChange("OP IDLE")
+                print(self.states)
                
 
         if self.states["blasterPutAway"] == True:
@@ -212,6 +245,7 @@ class Player(Sprite):
         #keep playing animation by indexing from animation list.
         self.surf = self.rightAnim if self.facing == "right" else self.leftAnim
         screen.blit(self.surf[self.frame_num], self.rect.topleft)
+        pygame.draw.rect(screen, (0,255,0), self.hitboxDict[self.mode]["rect"])
 
         #draw blaster
         mouse_pos = pygame.mouse.get_pos()
@@ -247,7 +281,6 @@ class Player(Sprite):
             elif not self.states["jumping"]:
                 self.updateAnimNumber()
         self.ticks +=1
-
         
     #handles key presses based on key pressed update player animation and trigger any side effects
     def handlekeypress(self):
@@ -285,8 +318,8 @@ class Player(Sprite):
                     self.states["running"] = True
             
             #transform
-            if pressed_keys[pygame.K_s]:
-                if not self.states["transforming"] and not self.states["jumping"]:
+            if pressed_keys[pygame.K_s] and not pressed_keys[pygame.K_c]:
+                if not self.states["transforming"] and not self.states["jumping"] and not self.states["gettingBlaster"] and not self.states["blasterPutAway"]:
                     self.states["transforming"] = True
                     self.states["running"] = False
                     self.animationChange("OP TRANSFORM")
@@ -300,8 +333,6 @@ class Player(Sprite):
                         
             #jumping
             if pressed_keys[pygame.K_w] and self.on_ground and not self.states["transforming"] and self.mode == "robot":
-
-               
                 self.on_ground = False
                 self.states["jumping"] = True
                 self.animationChange("OP JUMP")
@@ -350,6 +381,8 @@ class Player(Sprite):
             if not pressingkey and not self.states["jumping"]:
                 self.resetStates()
             if pressed_keys[pygame.K_LSHIFT] and (not pressed_keys[pygame.K_a] and not pressed_keys[pygame.K_d]):
+                self.resetStates()
+            if pressed_keys[pygame.K_c] and not self.states["gettingBlaster"] and (not pressed_keys[pygame.K_a] and not pressed_keys[pygame.K_d]):
                 self.resetStates()
             # if pressed_keys[pygame.K_w] and (not pressed_keys[pygame.K_a] and not pressed_keys[pygame.K_d])
 
