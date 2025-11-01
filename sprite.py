@@ -60,6 +60,19 @@ animDictionary = {
         "numCols": 3,
         "allFramesImage": "Images/Optimus Prime idle.png"
     },
+    "ENEMY IDLE": {
+        "numFrames": 1,
+        "numRows": 3,
+        "numCols": 3,
+        "allFramesImage": "Images/Enemies/Enemy Walk.png"
+    },
+    "ENEMY WALK": {
+        "numFrames": 2,
+        "numRows": 3,
+        "numCols": 3,
+        "allFramesImage": "Images/Enemies/Emeny Walk.png"
+    }
+    
     
     
 }

@@ -99,6 +99,7 @@ class Player(Sprite):
             if self.mode == "car":
                 self.states["driving"] = True 
                 self.animationChange("OP DRIVE IDLE")
+        # print(self.ticks, self.states["jumping"])
     
     # checks if player is colliding with the platform masks: returns true is player overlapping with platform masks, returns false if not
     def collidedWithPlatforms(self, platforms_list):
@@ -200,19 +201,16 @@ class Player(Sprite):
 
         if self.states["transforming"] == True:
             if self.mode == "car" and self.frame_num > 1: 
-                print("stop transforming")
                 self.states["transforming"] = False
             elif self.mode == "robot" and self.frame_num == 0: 
                 self.states["transforming"] = False
 
         if self.states["gettingBlaster"] == True:
-            if self.frame_num >= 6: 
-                print(self.frame_num)
+            if self.frame_num >= 6:
                 self.states["gettingBlaster"] = False
                 self.blaster.showing = True
                 self.resetStates()
                 self.animationChange("OP IDLE")
-                print(self.states)
                
 
         if self.states["blasterPutAway"] == True:
@@ -245,7 +243,7 @@ class Player(Sprite):
         #keep playing animation by indexing from animation list.
         self.surf = self.rightAnim if self.facing == "right" else self.leftAnim
         screen.blit(self.surf[self.frame_num], self.rect.topleft)
-        pygame.draw.rect(screen, (0,255,0), self.hitboxDict[self.mode]["rect"])
+        # pygame.draw.rect(screen, (0,255,0), self.hitboxDict[self.mode]["rect"])
 
         #draw blaster
         mouse_pos = pygame.mouse.get_pos()
@@ -337,13 +335,13 @@ class Player(Sprite):
                 self.states["jumping"] = True
                 self.animationChange("OP JUMP")
 
-            if pressed_keys[pygame.K_c] and not self.states["driving"]:
+            #NOTE: current code doesn't allow blaster in car mode
+            if pressed_keys[pygame.K_c] and not self.states["driving"] and not self.states["jumping"] and not self.states["transforming"] and self.mode == "robot":
                 if not self.states["gettingBlaster"] and self.blaster.showing == False:
                     self.states["gettingBlaster"] = True
                     self.blaster.showing = True
-                   
                     self.animationChange("OP GET BLASTER")
-            elif not pressed_keys[pygame.K_c] and not self.states["blasterPutAway"] and self.blaster.showing and not self.states["driving"]:
+            elif not pressed_keys[pygame.K_c] and not self.states["blasterPutAway"] and self.blaster.showing and not self.states["driving"] and not self.states["transforming"] and self.mode == "robot":
                     self.states["blasterPutAway"] = True
                     self.blaster.showing = False
                     self.animationChange("OP GET BLASTER")
@@ -382,7 +380,7 @@ class Player(Sprite):
                 self.resetStates()
             if pressed_keys[pygame.K_LSHIFT] and (not pressed_keys[pygame.K_a] and not pressed_keys[pygame.K_d]):
                 self.resetStates()
-            if pressed_keys[pygame.K_c] and not self.states["gettingBlaster"] and (not pressed_keys[pygame.K_a] and not pressed_keys[pygame.K_d]):
+            if pressed_keys[pygame.K_c] and not self.states["gettingBlaster"] and (not pressed_keys[pygame.K_a] and not pressed_keys[pygame.K_d]) and not self.states["jumping"]:
                 self.resetStates()
             # if pressed_keys[pygame.K_w] and (not pressed_keys[pygame.K_a] and not pressed_keys[pygame.K_d])
 

@@ -55,25 +55,25 @@ class Blaster(Sprite):
 
     #rotate
     def rotate_towards(self, owner, pos):
-
-        px, py = owner.hitboxDict[owner.mode]["rect"].topleft
-        if not owner.states["running"]:
-            if self.facing == "right":
-                self.pivot = [px - 15,py + 35]
-            else:
-                self.pivot = [px + 55,py + 35]
-        elif owner.states["running"]:
-            if self.facing == "right":
-                self.pivot = [px - 8,py + 35]
-            else:
-                self.pivot = [px + 30,py + 35]
-            if(owner.type == "player" and owner.states["running"]) or (owner.type == "enemy" and owner.state == "patrol"):
-                if owner.frame_num % 2 == 0:
-                    self.pivot[0] += 10
-                    self.pivot[1] -= 1
+        if owner.type == "player":
+            px, py = owner.hitboxDict[owner.mode]["rect"].topleft
+            if not owner.states["running"]:
+                if self.facing == "right":
+                    self.pivot = [px - 15,py + 35]
                 else:
-                    self.pivot[0] += 10
-                    self.pivot[1] -= 4
+                    self.pivot = [px + 55,py + 35]
+            elif owner.states["running"]:
+                if self.facing == "right":
+                    self.pivot = [px - 8,py + 35]
+                else:
+                    self.pivot = [px + 30,py + 35]
+                if(owner.type == "player" and owner.states["running"]) or (owner.type == "enemy" and owner.state == "patrol"):
+                    if owner.frame_num % 2 == 0:
+                        self.pivot[0] += 10
+                        self.pivot[1] -= 1
+                    else:
+                        self.pivot[0] += 10
+                        self.pivot[1] -= 4
 
 
         # r_surf, r_rect = self.rotateSprite(self.angle)

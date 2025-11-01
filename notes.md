@@ -73,3 +73,6 @@ Add enemies
 cannot jump in idle while holding blaster
 
 press blaster while jumping = ERROR
+
+
+Enemy starting pos wrong

@@ -5,10 +5,14 @@ import time
 from player import Player
 from blaster import Blaster
 
+ENEMY_HITBOX_OFFSET_LEFT = 195
+ENEMY_HITBOX_OFFSET_TOP = 190
+ENEMY_HITBOX_WIDTH = 50
+ENEMY_HITBOX_HEIGHT = 220
 class Enemy(Sprite):
 
     def __init__(self, pos, type, PLATFORM_SIZE, player):
-      Sprite.__init__(self,pos,(600,600), "OPRun.png")
+      Sprite.__init__(self,pos,(600,600), "Enemies/Enemy Walk.png")
       self.blaster = Blaster()
       self.blaster.showing = True
       self.type = "enemy"
@@ -17,10 +21,10 @@ class Enemy(Sprite):
       self.dead = False
       self.facing = "left"
       self.startpos = pos
-      self.farthest_left = pos[0] - PLATFORM_SIZE[0] * 1.5
-      self.farthest_right = pos[0] + PLATFORM_SIZE[0] * 1.5
+      self.farthest_left = pos[0] - PLATFORM_SIZE[0] * 1
+      self.farthest_right = pos[0] + PLATFORM_SIZE[0] * 1
       self.steps = 0
-      self.animationChange("OP RUN")
+      self.animationChange("ENEMY IDLE")
       self.frame_num = 0
       self.boundary_rect = self.get_mask_rect(self.mask, self.rect.topleft)
       offsety = self.boundary_rect.top - self.rect.top
@@ -29,6 +33,7 @@ class Enemy(Sprite):
       self.rect.left = self.rect.left - offsetx
       self.enemyrangeX = 150
       self.enemyrangeY = 60
+      self.speed = 0
 
       #time stuffz
       self.start_time = time.time()
@@ -45,13 +50,18 @@ class Enemy(Sprite):
       #player
       self.player = player
       self.ticks = 0
+
+      #hitbox STuffz
+      self.enemy_hitbox_rect = pygame.Rect(self.boundary_rect.bottomleft, (ENEMY_HITBOX_WIDTH, ENEMY_HITBOX_HEIGHT))
+      self.enemy_hitbox_mask = pygame.mask.Mask((self.enemy_hitbox_rect.width, self.enemy_hitbox_rect.height))
+      self.enemy_hitbox_mask.fill()
     
 
       
     
 
     def draw(self, screen): #use speed to update farthest pos
-        
+        self.enemy_hitbox_rect.center = self.rect.center
         self.patrol()
         self.spotPlayer(self.player)
         if self.ticks % 10 == 0:
@@ -66,7 +76,7 @@ class Enemy(Sprite):
           print("shoot")
 
 
-        pygame.draw.line(screen, (149, 52, 235), (self.farthest_left, self.boundary_rect.centery), (self.farthest_right, self.boundary_rect.centery),5)
+        pygame.draw.line(screen, (149, 52, 235), (self.farthest_left, self.enemy_hitbox_rect.centery), (self.farthest_right, self.enemy_hitbox_rect.centery),5)
 
         #keep playing animation by indexing from animation list.
         self.surf = self.rightAnim if self.facing == "right" else self.leftAnim
@@ -74,6 +84,8 @@ class Enemy(Sprite):
         
         #draw blaster
         self.blaster.draw(screen, self, (0,0))
+        
+        pygame.draw.rect(screen, (100, 100, 100), self.enemy_hitbox_rect)
 
     def move(self, speed):
       self.farthest_left += speed
@@ -83,7 +95,7 @@ class Enemy(Sprite):
       self.rect.move_ip(speed, 0) #make enemy follow background
 
     def patrol(self):
-      self.boundary_rect = self.get_mask_rect(self.mask, self.rect.topleft)
+      # self.enemy_hitbox_rect = self.get_mask_rect(self.mask, self.rect.topleft)
 
       if self.state == "spotplayer":
         """
@@ -92,15 +104,15 @@ class Enemy(Sprite):
         keep moving in direction of facing until hit edge.
         """
 
-        if self.facing == "left" and self.boundary_rect.left > self.farthest_left:
+        if self.facing == "left" and self.enemy_hitbox_rect.left > self.farthest_left:
           self.rect.move_ip(-self.speed, 0)
-        if self.facing == "right" and self.boundary_rect.right < self.farthest_right:
+        if self.facing == "right" and self.enemy_hitbox_rect.right < self.farthest_right:
           self.rect.move_ip(self.speed, 0)
 
       if self.state == "patrol":
-        if self.boundary_rect.left <= self.farthest_left:
+        if self.enemy_hitbox_rect.left <= self.farthest_left:
           self.facing = "right"
-        if self.boundary_rect.right >= self.farthest_right:
+        if self.enemy_hitbox_rect.right >= self.farthest_right:
           self.facing = "left"
         if self.facing == "right":
           self.rect.move_ip(self.speed, 0)
@@ -119,10 +131,10 @@ class Enemy(Sprite):
         self.stoptime = self.start_time + random.uniform(self.min_wait,self.max_wait)
 
     def spotPlayer(self, player):
-      if abs(player.boundary_rect.centerx - self.boundary_rect.centerx) < self.enemyrangeX and abs(player.boundary_rect.centery - self.boundary_rect.centery) < self.enemyrangeY:
+      if abs(player.boundary_rect.centerx - self.enemy_hitbox_rect.centerx) < self.enemyrangeX and abs(player.boundary_rect.centery - self.enemy_hitbox_rect.centery) < self.enemyrangeY:
         print("spotted")
         self.state = "spotplayer"
-        if self.boundary_rect.centerx < player.boundary_rect.centerx:
+        if self.enemy_hitbox_rect.centerx < player.boundary_rect.centerx:
           self.facing = "right"
         else:
           self.facing = "left"
