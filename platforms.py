@@ -30,7 +30,7 @@ class Platforms:
                 y = yOffset + (row * h)
 
                 if num == E:
-                    enemy = Enemy((x,y + h),"Regular",(w,h), self.player)
+                    enemy = Enemy((x + 150,y + h),"Regular",(w,h), self.player)
                     self.enemies.append(enemy)
 
                 elif num != 0:
@@ -51,6 +51,7 @@ class Platforms:
     def move_enemies(self, speed):
         for i in range(len(self.enemies)):
             self.enemies[i].move(speed)
+            self.enemies[i].startpos[0] += speed
 
     def draw(self, screen):
         "if tile xpos in screenbox(min: 0, max: WIDTH)"

@@ -20,9 +20,9 @@ class Enemy(Sprite):
       self.state = "patrol"
       self.dead = False
       self.facing = "left"
-      self.startpos = pos
-      self.farthest_left = pos[0] - PLATFORM_SIZE[0] * 1
-      self.farthest_right = pos[0] + PLATFORM_SIZE[0] * 1
+      self.startpos = [pos[0], pos[1]]
+      self.farthest_left = pos[0] - PLATFORM_SIZE[0] * 1.5
+      self.farthest_right = pos[0] + PLATFORM_SIZE[0] * 1.5
       self.steps = 0
       self.animationChange("ENEMY IDLE")
       self.frame_num = 0
@@ -31,6 +31,8 @@ class Enemy(Sprite):
       offsetx = self.boundary_rect.left - self.rect.left
       self.rect.top = self.rect.top - offsety - (self.boundary_rect.bottom - self.boundary_rect.top)
       self.rect.left = self.rect.left - offsetx
+      self.rect.centerx = pos[0]
+      self.rect.centery = pos[1]
       self.enemyrangeX = 150
       self.enemyrangeY = 60
       self.speed = 0
@@ -86,6 +88,8 @@ class Enemy(Sprite):
         self.blaster.draw(screen, self, (0,0))
         
         pygame.draw.rect(screen, (100, 100, 100), self.enemy_hitbox_rect)
+        # pygame.draw.rect(screen, (10, 100, 2), self.rect)
+        pygame.draw.circle(screen, (20, 20, 20), self.startpos, 20)
 
     def move(self, speed):
       self.farthest_left += speed
