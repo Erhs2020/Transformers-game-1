@@ -77,3 +77,5 @@ press blaster while jumping = ERROR
 
 Enemy starting pos wrong
 
+Add property to each plat dict item specifying plat height
+when calculating start pos of enemy in plat class, use the plat height to help.
